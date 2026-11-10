@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
     <header>
         <h1>Ruang Aspirasi</h1>
         <p>Login Pengguna</p>
