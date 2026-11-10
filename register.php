@@ -34,7 +34,7 @@
                 <label>Password</label>
                 <input type="password" name="password">
 
-                <label>Daftat Sebagai : PENUMPANG </label>
+                <label>Daftat Sebagai: </label>
                 <div style="display: flex; align-items: center; gap: 15px; margin-top: 5px; margin-bottom: 15px;">
                     <span>Expert</span><input type="radio" name="role" value="expert" style="width: auto; margin: 0;">
                     <span>Client</span><input type="radio" name="role" value="client" style="width: auto; margin: 0;">
