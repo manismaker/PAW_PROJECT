@@ -2,20 +2,15 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Register - Ruang Aspirasi</title>
+    <title>Register - Aspirasi Daerah</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <header>
-        <h1>Ruang Aspirasi</h1>
-        <p>Register Pengguna</p>
-    </header>
-
     <main>
         
         <div class="form-login">
-            <h2>Daftar Akun Baru</h2>
+            <h2>Daftar Akun</h2>
             <p>Silakan isi data di bawah ini untuk membuat akun.</p>
 
             <form action="" method="POST">
@@ -44,10 +39,6 @@
             </form>
 
     </main>
-
-    <footer>
-        <p>&copy; 2026 Ruang Aspirasi</p>
-    </footer>
 
 </body>
 </html>

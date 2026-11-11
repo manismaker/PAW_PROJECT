@@ -115,8 +115,6 @@ main {
     cursor: pointer;
 }
 
-/* === TAMBAHAN STYLE KHUSUS FORM TAMBAH DISKUSI === */
-/* Container Card Putih di Tengah */
 .form-tambah-diskusi {
     background-color: white;
     width: 650px;
@@ -124,7 +122,6 @@ main {
     margin: 0 auto;
     padding: 35px 40px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .form-header {
@@ -133,7 +130,7 @@ main {
 }
 
 .form-header h2 {
-    margin: 0 0 8px 0;
+    margin: 2px;
     color: #2c3e50;
     font-size: 1.5rem;
 }
@@ -144,7 +141,6 @@ main {
     margin: 0;
 }
 
-/* Label & Input tambahan */
 .form-group {
     margin-bottom: 20px;
 }
@@ -158,66 +154,16 @@ main {
     color: #333;
 }
 
-.required {
-    color: #e74c3c;
-}
-
-/* Styling untuk Select Dropdown & Textarea */
 select, textarea {
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-family: Arial, sans-serif;
     font-size: 0.95rem;
     background-color: #fff;
 }
 
-select:focus, textarea:focus, input:focus {
-    outline: none;
-    border-color: #2980b9;
-}
-
-/* Radio Button Sejajar */
-.radio-inline-group {
-    display: flex;
-    gap: 25px;
-    margin-top: 5px;
-}
-
-.radio-inline-group label {
-    font-weight: normal;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-/* File Upload & Info */
-.input-file {
-    padding: 6px 0;
-    border: none;
-}
-
-.file-info {
-    display: block;
-    color: #7f8c8d;
-    font-size: 0.8rem;
-    margin-top: 4px;
-}
-
-/* Checkbox */
-.checkbox-container label {
-    font-weight: normal;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-}
-
-/* Tombol Aksi (Kirim & Batal) */
 .button-actions {
     display: flex;
     gap: 10px;

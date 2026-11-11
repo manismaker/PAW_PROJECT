@@ -3,19 +3,18 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Ruang Aspirasi</title>
+    <title>Aspirasi Daerah</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
     <header>
-        <h1>Ruang Aspirasi</h1>
+        <h1>Aspirasi Daerah</h1>
         <p>Suara Masyarakat, Perubahan Bersama</p>
     </header>
 
     <nav>
         <a href="index.php">Beranda</a>
-        <a href="#tentang">Tentang</a>
         <a href="#diskusi">Diskusi</a>
         <a href="login.php">Login</a>
         <a href="register.php">Daftar</a>
@@ -25,7 +24,7 @@
         <section class="hero">
             <h2>Sampaikan Aspirasi Anda</h2>
             <p>
-                Ruang Aspirasi merupakan tempat bagi masyarakat
+                Aspirasi Daerah merupakan tempat bagi masyarakat
                 untuk menyampaikan pendapat, permasalahan,
                 dan berdiskusi mengenai kebijakan publik.
             </p>
@@ -65,7 +64,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 Ruang Aspirasi</p>
+        <p>&copy; 2026 Aspirasi Daerah</p>
     </footer>
 
 </body>
