@@ -34,13 +34,12 @@
                 <label>Password</label>
                 <input type="password" name="password">
 
-                <label>Daftat Sebagai: </label>
-                <div style="display: flex; align-items: center; gap: 15px; margin-top: 5px; margin-bottom: 15px;">
-                    <span>Expert</span><input type="radio" name="role" value="expert" style="width: auto; margin: 0;">
-                    <span>Client</span><input type="radio" name="role" value="client" style="width: auto; margin: 0;">
+                <label>Daftar Sebagai :</label>
+                <div style="display: flex;  gap: 5px; margin-top: 5px; margin-bottom: 5px;">
+                    <input type="radio" name="role">Expert
+                    <input type="radio" name="role">Client
                 </div>
-  
-
+                
                 <button type="submit" name="register">Daftar Sekarang</button>
             </form>
 
