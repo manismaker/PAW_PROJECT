@@ -34,7 +34,7 @@
                 <label>Password</label>
                 <input type="password" name="password">
 
-                <label>Daftar Sebagai : Penumpang</label>
+                <label>Daftar Sebagai :</label>
                 <div style="display: flex;  gap: 5px; margin-top: 5px; margin-bottom: 5px;">
                     <input type="radio" name="role">Expert
                     <input type="radio" name="role">Client
