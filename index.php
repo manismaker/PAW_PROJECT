@@ -15,6 +15,7 @@
 
     <nav>
         <a href="index.php">Beranda</a>
+        <a href="#diskusi">Dashboard</a>
         <a href="#diskusi">Diskusi</a>
         <a href="login.php">Login</a>
         <a href="register.php">Daftar</a>
