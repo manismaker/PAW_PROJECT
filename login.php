@@ -3,14 +3,10 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Login - Ruang Aspirasi</title>
+    <title>Login - Aspirasi Daerah</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <h1>Ruang Aspirasi</h1>
-        <p>Login Pengguna</p>
-    </header>
 
     <main>
         <div class="form-login">
@@ -35,9 +31,7 @@
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2026 Ruang Aspirasi</p>
-    </footer>
+    
 
 </body>
 </html>
