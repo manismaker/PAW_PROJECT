@@ -17,11 +17,11 @@
             $hashPW = hash('sha256', $passwd);
             
             try{
-                $statement = $dbc->prepare("INSERT INTO user (nama, email, password, status, alamat) VALUES (:nama, :email, :password, :status, :alamat)");
-                // $statement->bindValue(':#', $nama_lengkap);
+                $statement = $dbc->prepare("INSERT INTO user (nama, email, password, status, alamat, no_telepon) VALUES (:nama, :email, :password, :status, :alamat, :no_telepon)");
+                $statement->bindValue(':#', $nama_lengkap);
                 $statement->bindValue(':nama', $username);
                 $statement->bindValue(':email', $email);
-                // $statement->bindValue(':no_telepon', $telepon);
+                $statement->bindValue(':no_telepon', $telepon);
                 $statement->bindValue(':password', $hashPW);
                 $statement->bindValue(':status', $role);
                 $statement->bindValue(':alamat', $alamat);

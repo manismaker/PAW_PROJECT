@@ -19,7 +19,7 @@
     if(empty($email) || !preg_match($pola_email, $email)){
         $error['mail'] = "Email tidak valid";
     }
-    $pola_telepon = '/^(?:\+62|62|0)8[1-9][0-9]{7,10}$/';
+    $pola_telepon = '/^(?:62|0)8[1-9][0-9]{7,10}$/';
     if(empty($telepon) || !preg_match($pola_telepon, $telepon)){
         $error['nomor'] = "No telepon tidak valid";
     }
