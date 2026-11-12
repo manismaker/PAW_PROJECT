@@ -70,55 +70,83 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Register - Aspirasi Daerah</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar - Aspirasi Daerah</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <main>
-        
-        <div class="form-login">
-            <h2>Daftar Akun</h2>
-            <p>Silakan isi data di bawah ini untuk membuat akun.</p>
+<?php include 'includes/header.php'; ?>
+<?php include 'includes/navbar.php'; ?>
 
-            <span><?= $error1 ?? ''?></span>
+<div class="content">
+    <h2>Daftar Akun</h2>
+    <p>Buat akun untuk bergabung dalam forum Aspirasi Daerah.</p>
 
-            <form action="" method="POST">
-                <label>Nama Lengkap</label>
-                <input type="text" name="nama_lengkap" >
-                <span><?= $error['lengkap'] ?? '' ?></span>
+    <div class="form-daftar">
+        <form method="POST" action="register.php">
+            <table>
+                <tr>
+                    <td>Nama Lengkap</td>
+                    <td>
+                        <input type="text" name="nama" placeholder="Masukkan nama lengkap">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Username</td>
+                    <td>
+                        <input type="text" name="username" placeholder="Buat username">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>
+                        <input type="text" name="email" placeholder="Masukkan email">
+                    </td>
+                </tr>
+				<tr>
+					<td>Nomor Telepon</td>
+					<td>
+						<input type="text" name="no_telepon" placeholder="Masukkan nomor telepon">
+					</td>
+				</tr>
+                <tr>
+                    <td>Password</td>
+                    <td>
+                        <input type="password" name="password" placeholder="Buat password">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Alamat</td>
+                    <td>
+                        <textarea name="alamat" placeholder="Masukkan alamat"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Jenis Akun</td>
+                    <td>
+                        <select name="role">
+                            <option value="">Pilih jenis akun</option>
+                            <option value="client">Client</option>
+                            <option value="expert">Expert</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit" name="daftar">Daftar</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
 
-                <label>Email</label>
-                <input type="email" name="email">
-                <span><?= $error['mail'] ?? '' ?></span>
-                <span><?= $error1 ?? '' ?></span>
+        <p>Sudah memiliki akun?
+            <a href="login.php">Login sekarang</a>
+        </p>
+    </div>
+</div>
 
-                <label>No Telepon</label>
-                <input type="text" name="no_telepon" >
-                <span><?= $error['nomor'] ?? '' ?></span>
-
-                <label>Username</label>
-                <input type="text" name="username" >
-                <span><?= $error['nama'] ?? '' ?></span>
-
-                <label>Password</label>
-                <input type="password" name="password">
-                <span><?= $error['passwd'] ?? '' ?></span>
-
-                <label for="alamat">Alamat Lengkap:</label><br>
-                <textarea id="alamat" name="alamat" rows="4" cols="38" placeholder="Contoh: Jl. Merdeka No. 10, RT 01/RW 02, Kelurahan..."></textarea><br/>
-                <span><?= $error['alamat'] ?? '' ?></span>
-                
-                <label>Daftat Sebagai: </label>
-                <div style="display: flex; align-items: center; gap: 15px; margin-top: 5px; margin-bottom: 15px;">
-                    <input type="radio" name="role" value="expert" style="width: auto; margin: 0;"><span>Expert</span>
-                    <input type="radio" name="role" value="client" style="width: auto; margin: 0;"><span>Client</span>
-                </div><br/>
-                <span><?= $error['role'] ?? '' ?></span>
-                <button type="submit" name="register">Daftar Sekarang</button>
-            </form>
-        </div>
-    </main>
+<?php include 'includes/footer.php'; ?>
 
 </body>
 </html>

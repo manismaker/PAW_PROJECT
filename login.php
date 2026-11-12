@@ -5,15 +5,15 @@
     include "config/koneksi.php";
     include "validasi/validasi_register.php";
 
-    if(isset($_SESSION['login'])) {
-        if($_SESSION['status'] === 'expert'){
-            header("location: expert/dashboard.php");
-            exit;
-        } elseif($_SESSION['status'] === 'client'){
-            header("location: client/dashboard.php");
-            exit;
-        }
-    }
+    // if(isset($_SESSION['login'])) {
+    //     if($_SESSION['status'] === 'expert'){
+    //         header("location: expert/dashboard.php");
+    //         exit;
+    //     } elseif($_SESSION['status'] === 'client'){
+    //         header("location: client/dashboard.php");
+    //         exit;
+    //     }
+    // }
 
     $error1 = "";
     if(isset($_POST['login'])){
@@ -69,45 +69,61 @@
 
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Login - Aspirasi Daerah</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Login - Aspirasi Daerah</title>
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
 
-    <main>
-        <div class="form-login">
-            <h2>Masuk ke Akun</h2>
-            <p>Silakan masukkan username dan password Anda.</p>
+		<?php include 'includes/header.php'; ?>
+		<?php include 'includes/navbar.php'; ?>
 
-            <span><?= $error1 ?? '' ?></span>
+		<div class="content">
+			<h2>Login Pengguna</h2>
+			<p>Silakan login untuk masuk ke akun Aspirasi Daerah.</p>
 
-            <form action="" method="POST">
-                <label>Username</label>
-                <input type="text" name="username">
+			<div class="form-login">
+				<form method="POST" action="login.php">
+					<table>
+						<tr>
+							<td>Username</td>
+							<td>
+								<input type="text" name="username" placeholder="Masukkan username">
+							</td>
+						</tr>
+						<tr>
+							<td>Password</td>
+							<td>
+								<input type="password" name="password" placeholder="Masukkan password">
+							</td>
+						</tr>
+                        <tr>
+                            <td>Jenis Akun</td>
+                            <td>
+                                <select name="role">
+                                    <option value="">Pilih jenis akun</option>
+                                    <option value="client">Client</option>
+                                    <option value="expert">Expert</option>
+                                </select>
+                            </td>
+                        </tr>
+						<tr>
+							<td colspan="2">
+								<button type="submit" name="login">Login</button>
+							</td>
+						</tr>
+					</table>
+				</form>
 
-                <label>Password</label>
-                <input type="password" name="password">
+				<p>Belum memiliki akun?
+					<a href="register.php">Daftar sekarang</a>
+				</p>
+			</div>
+		</div>
 
-                <label>Login Sebagai: </label>
-                <div style="display: flex; align-items: center; gap: 15px; margin-top: 5px; margin-bottom: 15px;">
-                    <input type="radio" name="role" value="expert" style="width: auto; margin: 0;"><span>Expert</span>
-                    <input type="radio" name="role" value="client" style="width: auto; margin: 0;"><span>Client</span>
-                </div>
+		<?php include 'includes/footer.php'; ?>
 
-                <button type="submit" name="login">Login</button>
-            </form>
-
-            <p>Belum memiliki akun?
-                <a href="register.php">Daftar di sini</a>
-            </p>
-
-            <a href="index.php">Kembali ke Beranda</a>
-        </div>
-    </main>
-
-    
-
-</body>
+	</body>
 </html>

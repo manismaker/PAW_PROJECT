@@ -5,85 +5,95 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Aspirasi Daerah - Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Client - Aspirasi Daerah</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <header>
-        <h1>Aspirasi Daerah</h1>
-        <p>Suara Masyarakat, Perubahan Bersama</p>
-    </header>
-    <nav class="navbar">
-        <div class="nav-left">
-            <a href="index.php">Beranda</a>
-            <a href="diskusi.php">Diskusi</a>
-            
-        </div>
-        <div class="nav-right">
-            <a href="profil.php">Halo,</a>
-            <a href="../logout.php" class="logout-link">Logout</a>
-        </div>
-    </nav>
-    <main>
-        <div class="profile-card">
-            <div class="profile-header-flex">
-                <div>
-                    <h2>Profil Pengguna</h2>
-                    <p>Kelola data informasi akun dan preferensi Anda di Ruang Aspirasi.</p>
-                </div>
-                <span class="badge-role">Role: Client</span>
-            </div>
 
-            <form action="" method="POST">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="nama">Nama Lengkap</label>
-                        <input type="text" id="nama" name="nama" value="Erick" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" value="erick_id" required>
-                    </div>
-                </div>
+<?php include '../includes/header.php'; ?>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" value="erick@mhs.ac.id" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="telepon">No Telepon / HP</label>
-                        <input type="text" id="telepon" name="telepon" value="0812-3456-7890">
-                    </div>
-                </div>
+<div class="menu">
+    <a href="dashboard.php">Dashboard</a>
+    <a href="profil.php">Profil</a>
+    <a href="diskusi.php">Diskusi Saya</a>
+    <a href="../logout.php">Logout</a>
+</div>
 
-                <div class="section-divider">
-                    <h3>Ganti Kata Sandi (Opsional)</h3>
-                </div>
+<div class="content">
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="password_lama">Password Lama</label>
-                        <input type="password" id="password_lama" name="password_lama" placeholder="Masukkan kata sandi lama">
-                    </div>
-                    <div class="form-group">
-                        <label for="password_baru">Password Baru</label>
-                        <input type="password" id="password_baru" name="password_baru" placeholder="Masukkan kata sandi baru">
-                    </div>
-                </div>
+    
+	<h2>Profil Saya</h2>
+	<p>Kelola informasi akun Anda pada halaman ini.</p>
 
-                <div class="profile-actions">
-                    <button type="submit" class="tombol btn-simpan">Simpan Data</button>
-                    <a href="../logout.php" class="btn-logout-red">Logout / Keluar</a>
-                </div>
-            </form>
-        </div>
+	<div class="informasi-profil">
+		<h3>Informasi Profil</h3>
+		<table>
+			<tr>
+				<td>Nama Lengkap</td>
+				<td>:</td>
+				<td>Nama Client</td>
+			</tr>
+			<tr>
+				<td>Username</td>
+				<td>:</td>
+				<td>username</td>
+			</tr>
+			<tr>
+				<td>Email</td>
+				<td>:</td>
+				<td>email@example.com</td>
+			</tr>
+			<tr>
+				<td>Nomor Telepon</td>
+				<td>:</td>
+				<td>08xxxxxxxxxx</td>
+			</tr>
+			<tr>
+				<td>Alamat</td>
+				<td>:</td>
+				<td>Alamat Client</td>
+			</tr>
+		</table>
+	</div>
 
-    </main>
+	<div class="form-profil">
+		<h3>Edit Profil</h3>
+		<form method="POST" action="profil.php">
+			<table>
+				<tr>
+					<td>Nama Lengkap</td>
+					<td><input type="text" name="nama" placeholder="Masukkan nama lengkap"></td>
+				</tr>
+				<tr>
+					<td>Username</td>
+					<td><input type="text" name="username" placeholder="Masukkan username"></td>
+				</tr>
+				<tr>
+					<td>Email</td>
+					<td><input type="text" name="email" placeholder="Masukkan email"></td>
+				</tr>
+				<tr>
+					<td>Nomor Telepon</td>
+					<td><input type="text" name="no_telepon" placeholder="Masukkan nomor telepon"></td>
+				</tr>
+				<tr>
+					<td>Alamat</td>
+					<td><textarea name="alamat" placeholder="Masukkan alamat"></textarea></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<button type="submit" name="simpan">Simpan Perubahan</button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
 
-    <footer>
-        <p>&copy; 2026 Aspirasi Daerah</p>
-    </footer>
+
+</div>
+
+<?php include '../includes/footer.php'; ?>
 
 </body>
 </html>

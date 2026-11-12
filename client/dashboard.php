@@ -5,74 +5,56 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Aspirasi Daerah</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Client - Aspirasi Daerah</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
-    <header>
-        <h1>Aspirasi Daerah</h1>
-        <p>Suara Masyarakat, Perubahan Bersama</p>
-    </header>
+<?php include '../includes/header.php'; ?>
 
-    <nav class="navbar">
-        <div class="nav-left">
-            <a href="index.php">Beranda</a>
-            <a href="diskusi.php">Diskusi</a>
-            
-        </div>
-        <div class="nav-right">
-            <a href="profil.php">Halo,</a>
-            <a href="../logout.php" class="logout-link">Logout</a>
-        </div>
-    </nav>
+<div class="menu">
+    <a href="dashboard.php">Dashboard</a>
+    <a href="profil.php">Profil</a>
+    <a href="diskusi.php">Diskusi Saya</a>
+    <a href="../logout.php">Logout</a>
+</div>
 
-    <main>
-        <section class="hero">
-            <h2>Sampaikan Aspirasi Anda</h2>
-            <p>
-                Aspirasi Daerah merupakan tempat bagi masyarakat
-                untuk menyampaikan pendapat, permasalahan,
-                dan berdiskusi mengenai kebijakan publik.
-            </p>
-            <a href="login.php" class="tombol">Mulai Berdiskusi</a>
-        </section>
+<div class="content">
 
-        <section id="tentang">
-            <h2>Tentang Ruang Aspirasi</h2>
-            <p>
-                Website ini menjadi media komunikasi antara
-                Masyarakat dan Expert untuk membahas berbagai
-                permasalahan serta aspirasi masyarakat.
-            </p>
-        </section>
+    <div class="dashboard-client">
+        <h2>Dashboard Client</h2>
+        <p>Selamat datang di halaman pengguna Aspirasi Daerah.</p>
+        <p>Melalui halaman ini, Anda dapat menyampaikan aspirasi dan mengikuti diskusi mengenai kebijakan publik.</p>
+    </div>
 
-        <section id="diskusi">
-            <h2>Topik Diskusi</h2>
+    <div class="fitur-client">
+        <h2>Menu Pengguna</h2>
 
-            <div class="diskusi">
-                <h3>Perbaikan Jalan Rusak</h3>
-                <p>Kategori: Infrastruktur</p>
-                <p>
-                    Membahas kondisi jalan rusak dan usulan
-                    perbaikan fasilitas jalan di lingkungan masyarakat.
-                </p>
+        <div class="daftar-fitur">
+            <div class="kartu-fitur">
+                <h3>Profil Saya</h3>
+                <p>Lihat dan ubah informasi profil akun Anda.</p>
+                <a href="profil.php">Kelola Profil</a>
             </div>
 
-            <div class="diskusi">
-                <h3>Peningkatan Fasilitas Sekolah</h3>
-                <p>Kategori: Pendidikan</p>
-                <p>
-                    Membahas kebutuhan fasilitas pendidikan
-                    untuk menunjang kegiatan belajar.
-                </p>
+            <div class="kartu-fitur">
+                <h3>Diskusi Saya</h3>
+                <p>Lihat dan kelola topik diskusi yang telah dibuat.</p>
+                <a href="diskusi.php">Lihat Diskusi</a>
             </div>
-        </section>
-    </main>
 
-    <footer>
-        <p>&copy; 2026 Aspirasi Daerah</p>
-    </footer>
+            <div class="kartu-fitur">
+                <h3>Buat Diskusi</h3>
+                <p>Sampaikan aspirasi melalui topik diskusi baru.</p>
+                <a href="tambah_diskusi.php">Buat Topik</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<?php include '../includes/footer.php'; ?>
 
 </body>
 </html>

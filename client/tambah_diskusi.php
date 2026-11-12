@@ -5,57 +5,76 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Aspirasi Daerah - Tambah Diskusi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Diskusi - Aspirasi Daerah</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <header>
-        <h1>Aspirasi Daerah</h1>
-        <p>Suara Masyarakat, Perubahan Bersama</p>
-    </header>
 
-    <main>
-        <div class="form-tambah-diskusi">
-            <div class="form-header">
-                <h2>Tambah Diskusi Baru</h2>
-                <p>Silakan isi form di bawah ini untuk menyampaikan aspirasi.</p>
-            </div>
+<?php include '../includes/header.php'; ?>
 
-            <form action="" method="POST" >
-                <div class="form-group">
-                    <label for="judul">Judul Aspirasi / Diskusi</label>
-                    <input type="text" id="judul" name="judul" placeholder="Contoh: Perbaikan Lampu Jalan dan Rambu Lalu Lintas">
-                </div>
+<div class="menu">
+    <a href="dashboard.php">Dashboard</a>
+    <a href="profil.php">Profil</a>
+    <a href="diskusi.php">Diskusi Saya</a>
+    <a href="../logout.php">Logout</a>
+</div>
 
-                <div class="form-group">
-                    <label for="kategori">Kategori Kebijakan / Topik</label>
-                    <select id="kategori" name="kategori">
-                        <option value="" disabled selected>-- Pilih Kategori --</option>
-                        <option value="infrastruktur">Infrastruktur</option>
-                        <option value="pelayanan">Pelayanan Publik</option>
-                        <option value="lingkungan">Lingkungan</option>
-                        <option value="pendidikan">Pendidikan</option>
-                        <option value="lainnya">Lainnya</option>
-                    </select>
-                </div>
+<div class="content">
 
-                <div class="form-group">
-                    <label for="isi">Isi Lengkap Diskusi / Masalah </label>
-                    <textarea id="isi" name="isi" rows="5" placeholder="Jelaskan secara runtut mengenai permasalahan, lokasi, serta solusi yang diusulkan..."></textarea>
-                </div>
+    <h2>Buat Diskusi Baru</h2>
+    <p>Sampaikan aspirasi dan permasalahan yang ingin Anda diskusikan.</p>
 
-                <div class="button-actions">
-                    <button type="submit" class="tombol btn-kirim">Kirim Diskusi</button>
-                    <button type="button" class="tombol btn-batal">Batal</button>
-                </div>
+    <div class="form-tambah-diskusi">
+        <form method="POST" action="tambah_diskusi.php">
+            <table>
+                <tr>
+                    <td>Judul Diskusi</td>
+                    <td>
+                        <input type="text" name="judul" placeholder="Masukkan judul diskusi">
+                    </td>
+                </tr>
 
-            </form>
-        </div>
-    </main>
+                <tr>
+                    <td>Kategori</td>
+                    <td>
+                        <select name="kategori">
+                            <option value="">Pilih Kategori</option>
+                            <option value="Pendidikan">Pendidikan</option>
+                            <option value="Kesehatan">Kesehatan</option>
+                            <option value="Infrastruktur">Infrastruktur</option>
+                            <option value="Ekonomi">Ekonomi</option>
+                            <option value="Lingkungan">Lingkungan</option>
+                            <option value="Pelayanan Publik">Pelayanan Publik</option>
+                            <option value="Sosial dan Budaya">Sosial dan Budaya</option>
+                            <option value="Keamanan dan Ketertiban">Keamanan dan Ketertiban</option>
+                        </select>
+                    </td>
+                </tr>
 
-    <footer>
-        <p>&copy; 2026 Aspirasi Daerah</p>
-    </footer>
+                <tr>
+                    <td>Isi Diskusi</td>
+                    <td>
+                        <textarea name="isi_diskusi" placeholder="Tuliskan aspirasi atau permasalahan yang ingin didiskusikan"></textarea>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <button type="submit" name="simpan">Kirim Diskusi</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        <p class="kembali-diskusi">
+            <a href="diskusi.php">Kembali ke Diskusi Saya</a>
+        </p>
+    </div>
+
+</div>
+
+<?php include '../includes/footer.php'; ?>
 
 </body>
 </html>

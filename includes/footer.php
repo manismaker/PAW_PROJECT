@@ -1,4 +1,3 @@
-<?php
-    echo "nida begok";
-    echo "nida begok";
-?>
+<div class="footer">
+    <p>&copy; 2026 Aspirasi Daerah. Semua Hak Dilindungi.</p>
+</div>
