@@ -19,16 +19,42 @@ header h1 {
 }
 
 /* Menu navigasi */
-nav {
-  background-color: #415e7b;
-  padding: 15px;
-  text-align: center;
+nav.navbar {
+    background-color: #415e7b;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between; 
 }
 
-nav a {
-  color: white;
-  text-decoration: none;
-  margin: 0 15px;
+.nav-left {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-left a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding-bottom: 3px;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: white;
+    font-size: 0.95rem;
+}
+
+.nav-right a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.logout-link:hover {
+    color: #ff6b6b; 
+    text-decoration: underline;
 }
 
 /* Bagian utama */
