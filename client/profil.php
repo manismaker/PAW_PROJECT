@@ -13,12 +13,16 @@
         <h1>Aspirasi Daerah</h1>
         <p>Suara Masyarakat, Perubahan Bersama</p>
     </header>
-    <nav>
-        <a href="index.php">Beranda</a>
-        <a href="#diskusi">Dashboard</a>
-        <a href="#diskusi">Diskusi</a>
-        <a href="login.php">Login</a>
-        <a href="register.php">Daftar</a>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.php">Beranda</a>
+            <a href="diskusi.php">Diskusi</a>
+            
+        </div>
+        <div class="nav-right">
+            <a href="profil.php">Halo,</a>
+            <a href="../logout.php" class="logout-link">Logout</a>
+        </div>
     </nav>
     <main>
         <div class="profile-card">
