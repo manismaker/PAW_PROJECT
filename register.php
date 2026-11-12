@@ -1,24 +1,47 @@
 <?php
-    include "config/koneksi.php";
 
     session_start();
 
-    // if(isset($_SESSION['is_login'])){
-    //     header("location: dashboard.php");
-    //     exit;
+    include "config/koneksi.php";
+    include "validasi/validasi_register.php";
+
+    // if(isset($_SESSION['login'])) {
+    //     if($_SESSION['status'] === 'expert'){
+    //         header("location: expert/dashboard.php");
+    //         exit;
+    //     } elseif($_SESSION['status'] === 'client'){
+    //         header("location: client/dashboard.php");
+    //         exit;
+    //     }
     // }
 
     $error1 = "";
     if(isset($_POST['register'])){
-        include "validasi/validasi_login.php";
+        $nama_lengkap = $_POST['nama_lengkap'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $telepon = $_POST['no_telepon'] ?? '';
+        $username = $_POST['username'] ?? '';
+        $passwd = $_POST['password'] ?? '';
+        $alamat = $_POST['alamat'] ?? '';
+        $role = $_POST['role'] ?? '';
+        
+        $error = [];
+        nama_lengkap($error, $nama_lengkap);
+        email($error, $email);
+        no_telepon($error, $telepon);
+        username($error, $username);
+        password($error, $passwd);
+        role($error, $role);
+        alamat($error, $alamat);
+
         if(!empty($error)){
             $error1 = "Daftar gagal, input dengan benar";
         }else{
             $hashPW = hash('sha256', $passwd);
             
             try{
-                $statement = $dbc->prepare("INSERT INTO user (nama, email, password, status, alamat, no_telepon) VALUES (:nama, :email, :password, :status, :alamat, :no_telepon)");
-                $statement->bindValue(':#', $nama_lengkap);
+                $statement = $dbc->prepare("INSERT INTO user (nama, email, password, status, alamat, no_telepon, nama_lengkap) VALUES (:nama, :email, :password, :status, :alamat, :no_telepon, :nama_lengkap)");
+                $statement->bindValue(':nama_lengkap', $nama_lengkap);
                 $statement->bindValue(':nama', $username);
                 $statement->bindValue(':email', $email);
                 $statement->bindValue(':no_telepon', $telepon);
@@ -27,8 +50,8 @@
                 $statement->bindValue(':alamat', $alamat);
 
                 $statement->execute();
-                $sukses = "Pendaftaran berhasil! Silakan masuk ke akun Anda.";
-                $_POST = [];   
+                header("location: login.php");
+                exit; 
             }catch(PDOException $ex){  
                 if ($ex->getCode() == 23000) {
                     $error1 = "Email atau username sudah digunakan.";
@@ -58,6 +81,8 @@
             <h2>Daftar Akun</h2>
             <p>Silakan isi data di bawah ini untuk membuat akun.</p>
 
+            <span><?= $error1 ?? ''?></span>
+
             <form action="" method="POST">
                 <label>Nama Lengkap</label>
                 <input type="text" name="nama_lengkap" >
@@ -66,6 +91,7 @@
                 <label>Email</label>
                 <input type="email" name="email">
                 <span><?= $error['mail'] ?? '' ?></span>
+                <span><?= $error1 ?? '' ?></span>
 
                 <label>No Telepon</label>
                 <input type="text" name="no_telepon" >
@@ -91,7 +117,7 @@
                 <span><?= $error['role'] ?? '' ?></span>
                 <button type="submit" name="register">Daftar Sekarang</button>
             </form>
-
+        </div>
     </main>
 
 </body>

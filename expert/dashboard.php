@@ -1,5 +1,5 @@
 <?php
 
-$hello = "hello"
+echo "SELAMAT DATANG DI DASHBOARD EXPERT";
 
 ?>
