@@ -1,66 +1,86 @@
+
 <?php
 
-    function nama_lengkap(&$error, $nama_lengkap){
-        if(empty($nama_lengkap) || is_numeric($nama_lengkap) || strlen($nama_lengkap) <= 5 || strlen($nama_lengkap) > 20){
-            $error['lengkap'] = "Nama lengkap tidak valid"; 
+    function nama_lengkap(&$errors, $field_list, $field_name){
+        $pola = "/^[a-zA-Z\s]+$/";
+
+        if(!isset($field_list[$field_name]) || empty($field_list[$field_name])){
+            $errors[$field_name] = "Nama lengkap harus diisi";
+        }else if(!preg_match($pola, $field_list[$field_name])){
+            $errors[$field_name] = "Nama lengkap hanya boleh berisi huruf";
+        }else if(strlen($field_list[$field_name]) < 6 || strlen($field_list[$field_name]) > 100){
+            $errors[$field_name] = "Nama lengkap harus terdiri dari 6-100 karakter";
         }
     }
 
-    function email(&$error, $email){
-        if(empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)){
-            $error['mail'] = "Email tidak valid";
+    function email(&$errors, $field_list, $field_name){
+        if(!isset($field_list[$field_name]) || empty($field_list[$field_name])){
+            $errors[$field_name] = "Email harus diisi";
+        }else if(!filter_var($field_list[$field_name], FILTER_VALIDATE_EMAIL)){
+            $errors[$field_name] = "Format email tidak valid";
         }
     }
 
-    function no_telepon(&$error, $telepon){
-        $pola_telepon = '/^(?:62|0)8[1-9][0-9]$/';
-        if(empty($telepon) || !preg_match($pola_telepon, $telepon) || strlen($telepon) < 10 || strlen($telepon) > 13){
-            $error['nomor'] = "No telepon tidak valid";
+    function no_telepon(&$errors, $field_list, $field_name){
+        $pola = "/^[0-9]+$/";
+
+        if(!isset($field_list[$field_name]) || empty($field_list[$field_name])){
+            $errors[$field_name] = "Nomor telepon harus diisi";
+        }else if(!preg_match($pola, $field_list[$field_name])){
+            $errors[$field_name] = "Nomor telepon hanya boleh berisi angka";
+        }else if(strlen($field_list[$field_name]) < 10 || strlen($field_list[$field_name]) > 13){
+            $errors[$field_name] = "Nomor telepon harus terdiri dari 10-13 digit";
         }
     }
 
-    function username(&$error, $username){
-        $pola_username = '/^[a-zA-Z0-9_]+$/';
-        if(empty($username) || !preg_match($pola_username, $username) || strlen($username) < 5 || strlen($username) > 20){
-            $error['nama'] = "Username Tidak valid";
-        }
-    }  
+    function username(&$errors, $field_list, $field_name){
+        $pola = "/^[a-zA-Z0-9_]+$/";
 
-    function password(&$error, $passwd){
-        $pola_passwd = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/';
-        if(empty($passwd) || !preg_match($pola_passwd, $passwd) || strlen($passwd) < 8 || strlen($passwd) > 20){
-            $error['passwd'] = "Password tidak valid";
-
-        }
-    }  
-    
-    function role(&$error, $role){
-        if(!in_array($role, ['expert', 'client'])){
-            $error['role'] = "Role harus di pilih";
-
+        if(!isset($field_list[$field_name]) || empty($field_list[$field_name])){
+            $errors[$field_name] = "Username harus diisi";
+        }else if(!preg_match($pola, $field_list[$field_name])){
+            $errors[$field_name] = "Username hanya boleh berisi huruf, angka, dan underscore";
+        }else if(strlen($field_list[$field_name]) < 5 || strlen($field_list[$field_name]) > 20){
+            $errors[$field_name] = "Username harus terdiri dari 5-20 karakter";
         }
     }
 
-    function alamat(&$error, $alamat){
-        if(empty($alamat)){
-            $error['alamat'] = "Alamat harus di isi";
+    function password(&$errors, $field_list, $field_name){
+        $pola = "/^[a-zA-Z0-9]+$/";
 
+        if(!isset($field_list[$field_name]) || empty($field_list[$field_name])){
+            $errors[$field_name] = "Password harus diisi";
+        }else if(!preg_match($pola, $field_list[$field_name])){
+            $errors[$field_name] = "Password hanya boleh berisi huruf dan angka";
+        }else if(strlen($field_list[$field_name]) < 8){
+            $errors[$field_name] = "Password minimal terdiri dari 8 karakter";
         }
     }
 
-function selectAll() {
-    global $dbc;
-    $statement = "SELECT * FROM user";
-    $result = $dbc->query($statement);
-    
-    $rows = [];
-    if ($result) {
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-            $rows[] = $row;
+    function role(&$errors, $field_list, $field_name){
+        if(!isset($field_list[$field_name]) || !in_array($field_list[$field_name], ['expert', 'client'])){
+            $errors[$field_name] = "Silakan pilih jenis akun";
         }
     }
-    return $rows;
-}
 
+    function alamat(&$errors, $field_list, $field_name){
+        if(!isset($field_list[$field_name]) || empty($field_list[$field_name])){
+            $errors[$field_name] = "Alamat harus diisi";
+        }
+    }
+
+    function selectAll() {
+        global $dbc;
+        $statement = "SELECT * FROM user";
+        $result = $dbc->query($statement);
+
+        $rows = [];
+        if ($result) {
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                $rows[] = $row;
+            }
+        }
+        return $rows;
+    }
 
 ?>
