@@ -15,8 +15,9 @@
 
 <div class="menu">
     <a href="dashboard.php">Dashboard</a>
+	<a href="diskusi.php">Diskusi Saya</a>
     <a href="profil.php">Profil</a>
-    <a href="diskusi.php">Diskusi Saya</a>
+    
     <a href="../logout.php">Logout</a>
 </div>
 
