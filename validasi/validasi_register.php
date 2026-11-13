@@ -1,6 +1,4 @@
-
 <?php
-
     function nama_lengkap(&$errors, $field_list, $field_name){
         $pola = "/^[a-zA-Z\s]+$/";
 

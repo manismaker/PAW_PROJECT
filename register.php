@@ -15,7 +15,10 @@
         }
     }
 
+    
     $error1 = "";
+    $error = [];
+
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $nama_lengkap = $_POST['nama_lengkap'] ?? '';
         $email = $_POST['email'] ?? '';
@@ -24,21 +27,20 @@
         $passwd = $_POST['password'] ?? '';
         $alamat = $_POST['alamat'] ?? '';
         $role = $_POST['role'] ?? '';
-        
-        $error = [];
-        nama_lengkap($error, $nama_lengkap);
-        email($error, $email);
-        no_telepon($error, $telepon);
-        username($error, $username);
-        password($error, $passwd);
-        role($error, $role);
-        alamat($error, $alamat);
+
+        nama_lengkap($error, $_POST, 'nama_lengkap');
+        email($error, $_POST, 'email');
+        no_telepon($error, $_POST, 'no_telepon');
+        username($error, $_POST, 'username');
+        password($error, $_POST, 'password');
+        role($error, $_POST, 'role');
+        alamat($error, $_POST, 'alamat');
 
         if(!empty($error)){
             $error1 = "Daftar gagal, input dengan benar";
         }else{
             $hashPW = hash('sha256', $passwd);
-            
+
             try{
                 $statement = $dbc->prepare("INSERT INTO user (nama, email, password, status, alamat, no_telepon, nama_lengkap) VALUES (:nama, :email, :password, :status, :alamat, :no_telepon, :nama_lengkap)");
                 $statement->bindValue(':nama_lengkap', $nama_lengkap);
@@ -51,17 +53,18 @@
 
                 $statement->execute();
                 header("location: login.php");
-                exit; 
-            }catch(PDOException $ex){  
-                if ($ex->getCode() == 23000) {
+                exit;
+            }catch(PDOException $ex){
+                if($ex->getCode() == 23000){
                     $error1 = "Email atau username sudah digunakan.";
-                } else {
-                    $error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
+                }else{
+                    $error2 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
                 }
                 error_log($ex->getMessage());
             }
         }
     }
+
 
 ?>
 
@@ -85,51 +88,51 @@
 
     <div class="form-daftar">
         <form method="POST" action="register.php">
-            <table>
+            <table>            
                 <tr>
                     <td>Nama Lengkap</td>
                     <td>
-                        <input type="text" name="nama" placeholder="Masukkan nama lengkap">
-                        <span><?= $error['lengkap'] ?? '' ?></span>
+                        <input type="text" name="nama_lengkap" placeholder="Masukkan nama lengkap" value="<?= htmlspecialchars($nama_lengkap ?? '') ?>">
+                        <br>
+                        <span><?= $error['nama_lengkap'] ?? '' ?></span>
                     </td>
                 </tr>
                 <tr>
                     <td>Username</td>
                     <td>
-                        <input type="text" name="username" placeholder="Buat username">
+                        <input type="text" name="username" placeholder="Buat username" value="<?= htmlspecialchars($username ?? '') ?>">
                         <br>
-                        <span><?= $error['nama'] ?? '' ?></span>
+                        <span><?= $error['username'] ?? '' ?></span>
                     </td>
                 </tr>
                 <tr>
                     <td>Email</td>
                     <td>
-                        <input type="text" name="email" placeholder="Masukkan email">
+                        <input type="text" name="email" placeholder="Masukkan email" value="<?= htmlspecialchars($email ?? '') ?>">
                         <br>
-                        <span><?= $error['mail'] ?? '' ?></span>
+                        <span><?= $error['email'] ?? '' ?></span>
                     </td>
                 </tr>
-
-				<tr>
-					<td>Nomor Telepon</td>
-					<td>
-						<input type="text" name="no_telepon" placeholder="Masukkan nomor telepon">
+                <tr>
+                    <td>Nomor Telepon</td>
+                    <td>
+                        <input type="text" name="no_telepon" placeholder="Masukkan nomor telepon" value="<?= htmlspecialchars($telepon ?? '') ?>">
                         <br>
-                        <span><?= $error['nomor'] ?? '' ?></span>
-					</td>
-				</tr>
+                        <span><?= $error['no_telepon'] ?? '' ?></span>
+                    </td>
+                </tr>
                 <tr>
                     <td>Password</td>
                     <td>
                         <input type="password" name="password" placeholder="Buat password">
                         <br>
-                        <span><?= $error['passwd'] ?? '' ?></span>
+                        <span><?= $error['password'] ?? '' ?></span>
                     </td>
                 </tr>
                 <tr>
                     <td>Alamat</td>
                     <td>
-                        <textarea name="alamat" placeholder="Masukkan alamat"></textarea>
+                        <textarea name="alamat" placeholder="Masukkan alamat"><?= htmlspecialchars($alamat ?? '') ?></textarea>
                         <br>
                         <span><?= $error['alamat'] ?? '' ?></span>
                     </td>
@@ -139,8 +142,8 @@
                     <td>
                         <select name="role">
                             <option value="">Pilih jenis akun</option>
-                            <option value="client">Client</option>
-                            <option value="expert">Expert</option>
+                            <option value="client" <?= (isset($role) && $role == 'client') ? 'selected' : '' ?>>Client</option>
+                            <option value="expert" <?= (isset($role) && $role == 'expert') ? 'selected' : '' ?>>Expert</option>
                         </select>
                         <br>
                         <span><?= $error['role'] ?? '' ?></span>

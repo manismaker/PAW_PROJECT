@@ -285,6 +285,11 @@ body {
   text-decoration: none;
 }
 
+.form-login span{
+    color: red;
+    font-size: 12px;
+}
+
 /* Form Daftar */
 .form-daftar {
   background-color: #ffffff;
@@ -338,6 +343,11 @@ body {
 .form-daftar a {
   color: #2c3e50;
   text-decoration: none;
+}
+
+.form-daftar span{
+    color: red;
+    font-size: 12px;
 }
 
 /* footer (bagian bawah) */
