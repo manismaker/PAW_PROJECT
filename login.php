@@ -16,34 +16,36 @@ if(isset($_SESSION['login'])) {
 }
 
 $error1 = "";
-$error = [];
-$username = "";
-
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $username = $_POST['username'] ?? '';
     $passwd = $_POST['password'] ?? '';
+    $role = $_POST['role'] ?? '';
 
+    $error = [];
     username($error, $_POST, 'username');
     password($error, $_POST, 'password');
+    role($error, $_POST, 'role');
 
     if(!empty($error)){
         $error1 = "Login gagal, input dengan benar";
     }else{
         $hashPW = hash('sha256', $passwd);
-
         try{
-            $statement = $dbc->prepare("SELECT * FROM user WHERE nama = :username AND password = :password");
+            $statement = $dbc->prepare("SELECT * FROM user WHERE nama = :username AND password = :password AND status = :status");
             $statement->bindValue(':username', $username);
             $statement->bindValue(':password', $hashPW);
+            $statement->bindValue(':status', $role);
 
             $statement->execute();
 
             $user = $statement->fetch(PDO::FETCH_ASSOC);
 
             if($user){
+                // Simpan sesi login
                 $_SESSION['login'] = true;
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['status'] = $user['status'];
+                $_SESSION['id']  = $user['id_user'] ?? '';
+                $_SESSION['user_lengkap']  = $user['nama'] ?? '';
+                $_SESSION['status'] = $user['status'] ?? '';
 
                 if($user['status'] === 'expert'){
                     header("location: expert/dashboard.php");
@@ -52,10 +54,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     header("location: client/dashboard.php");
                     exit();
                 }
-            }else{
-                $error1 = "Username atau Password salah.";
+            } else {
+                // Jika data tidak ditemukan di database
+                $error1 = "Username, password, atau role salah.";
             }
-        }catch(PDOException $ex){
+        } catch(PDOException $ex) {
             $error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
             error_log($ex->getMessage());
         }
@@ -63,7 +66,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 }
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="id">
@@ -81,39 +83,55 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 		<div class="content">
 			<h2>Login Pengguna</h2>
 			<p>Silakan login untuk masuk ke akun Aspirasi Daerah.</p>
-            <div class="form-login">
-                <form method="POST" action="login.php">
-                    <table>
-                        <tr>
-                            <td>Username</td>
-                            <td>
-                                <input type="text" name="username" placeholder="Masukkan username" value="<?= htmlspecialchars($username ?? '') ?>">
-                                <br>
-                                <span><?= $error['username'] ?? '' ?></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Password</td>
-                            <td>
-                                <input type="password" name="password" placeholder="Masukkan password">
-                                <br>
-                                <span><?= $error['password'] ?? '' ?></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <span><?= $error1 ?></span>
-                                <br>
-                                <button type="submit" name="login">Login</button>
-                            </td>
-                        </tr>
-                    </table>
-                </form>
 
-                <p>Belum memiliki akun?
-                    <a href="register.php">Daftar sekarang</a>
-                </p>
-            </div>
+            <span><?= $error1?></span>
+
+			<div class="form-login">
+				<form method="POST" action="login.php">
+					<table>
+						<tr>
+							<td>Username</td>
+							<td>
+								<input type="text" name="username" placeholder="Masukkan username">
+							</td>
+						</tr>
+                        <tr>
+                            <span><?= $error['nama'] ?? '' ?></span>
+                        </tr>
+						<tr>
+							<td>Password</td>
+							<td>
+								<input type="password" name="password" placeholder="Masukkan password">
+							</td>
+						</tr>
+                        <tr>
+                            <span><?= $error['passwd'] ?? '' ?></span>
+                        </tr>
+                        <tr>
+                            <td>Jenis Akun</td>
+                            <td>
+                                <select name="role">
+                                    <option value="">Pilih jenis akun</option>
+                                    <option value="client">Client</option>
+                                    <option value="expert">Expert</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <span><?= $error['role'] ?? '' ?></span>
+                        </tr>
+						<tr>
+							<td colspan="2">
+								<button type="submit" name="login">Login</button>
+							</td>
+						</tr>
+					</table>
+				</form>
+
+				<p>Belum memiliki akun?
+					<a href="register.php">Daftar sekarang</a>
+				</p>
+			</div>
 		</div>
 
 		<?php include 'includes/footer.php'; ?>

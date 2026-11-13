@@ -58,7 +58,7 @@
                 if($ex->getCode() == 23000){
                     $error1 = "Email atau username sudah digunakan.";
                 }else{
-                    $error2 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
+                    $error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
                 }
                 error_log($ex->getMessage());
             }
@@ -85,6 +85,8 @@
 <div class="content">
     <h2>Daftar Akun</h2>
     <p>Buat akun untuk bergabung dalam forum Aspirasi Daerah.</p>
+
+    <span><?= $error1?></span>
 
     <div class="form-daftar">
         <form method="POST" action="register.php">
