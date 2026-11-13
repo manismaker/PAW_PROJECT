@@ -5,18 +5,18 @@
     include "config/koneksi.php";
     include "validasi/validasi_register.php";
 
-    // if(isset($_SESSION['login'])) {
-    //     if($_SESSION['status'] === 'expert'){
-    //         header("location: expert/dashboard.php");
-    //         exit;
-    //     } elseif($_SESSION['status'] === 'client'){
-    //         header("location: client/dashboard.php");
-    //         exit;
-    //     }
-    // }
+    if(isset($_SESSION['login'])) {
+        if($_SESSION['status'] === 'expert'){
+            header("location: expert/dashboard.php");
+            exit();
+        } elseif($_SESSION['status'] === 'client'){
+            header("location: client/dashboard.php");
+            exit();
+        }
+    }
 
     $error1 = "";
-    if(isset($_POST['register'])){
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $nama_lengkap = $_POST['nama_lengkap'] ?? '';
         $email = $_POST['email'] ?? '';
         $telepon = $_POST['no_telepon'] ?? '';
@@ -90,36 +90,48 @@
                     <td>Nama Lengkap</td>
                     <td>
                         <input type="text" name="nama" placeholder="Masukkan nama lengkap">
+                        <span><?= $error['lengkap'] ?? '' ?></span>
                     </td>
                 </tr>
                 <tr>
                     <td>Username</td>
                     <td>
                         <input type="text" name="username" placeholder="Buat username">
+                        <br>
+                        <span><?= $error['nama'] ?? '' ?></span>
                     </td>
                 </tr>
                 <tr>
                     <td>Email</td>
                     <td>
                         <input type="text" name="email" placeholder="Masukkan email">
+                        <br>
+                        <span><?= $error['mail'] ?? '' ?></span>
                     </td>
                 </tr>
+
 				<tr>
 					<td>Nomor Telepon</td>
 					<td>
 						<input type="text" name="no_telepon" placeholder="Masukkan nomor telepon">
+                        <br>
+                        <span><?= $error['nomor'] ?? '' ?></span>
 					</td>
 				</tr>
                 <tr>
                     <td>Password</td>
                     <td>
                         <input type="password" name="password" placeholder="Buat password">
+                        <br>
+                        <span><?= $error['passwd'] ?? '' ?></span>
                     </td>
                 </tr>
                 <tr>
                     <td>Alamat</td>
                     <td>
                         <textarea name="alamat" placeholder="Masukkan alamat"></textarea>
+                        <br>
+                        <span><?= $error['alamat'] ?? '' ?></span>
                     </td>
                 </tr>
                 <tr>
@@ -130,6 +142,8 @@
                             <option value="client">Client</option>
                             <option value="expert">Expert</option>
                         </select>
+                        <br>
+                        <span><?= $error['role'] ?? '' ?></span>
                     </td>
                 </tr>
                 <tr>

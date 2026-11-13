@@ -1,4 +1,48 @@
 <?php
+
+include "../config/koneksi.php";
+include "../validasi/validasi_register.php";
+
+$Data_user = selectAll();
+
+$error1 = "";
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+	$nama_lengkap = $_POST['nama'] ?? '';
+	$username = $_POST['username'] ?? '';
+	$email = $_POST['email'] ?? '';
+	$telepon = $_POST['no_telepon'] ?? '';
+	$alamat = $_POST['alamat'] ?? '';
+
+	$error = [];
+	nama_lengkap($error, $nama_lengkap);
+	username($error, $username);
+	email($error, $email);
+	no_telepon($error, $telepon);
+	alamat($error, $alamat);
+
+	if(!empty($error)){
+		$error1 = "Perubahan profil gagal, input dengan benar";
+	} else {
+		$user = $_SESSION['user_id'];
+		try {
+			$statement = $dbc->prepare("UPDATE user SET nama_lengkap = :nama_lengkap, nama = :username, email = :email, no_telepon = :no_telepon, alamat = :alamat WHERE id = :user_id");
+			$statement->bindValue(':nama_lengkap', $nama_lengkap);
+			$statement->bindValue(':username', $username);
+			$statement->bindValue(':email', $email);
+			$statement->bindValue(':no_telepon', $telepon);
+			$statement->bindValue(':alamat', $alamat);
+			$statement->bindValue(':user_id', $user);
+
+			$statement->execute();
+			header("Location: profil.php");
+			exit();
+		} catch (PDOException $ex) {
+			$error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
+			error_log("Error", $ex->getMessage());
+		}
+}
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -32,22 +76,22 @@
 			<tr>
 				<td>Nama Lengkap</td>
 				<td>:</td>
-				<td>Nama Client</td>
+				<td><?= $Data_user['nama_lengkap']?></td>
 			</tr>
 			<tr>
 				<td>Username</td>
 				<td>:</td>
-				<td>username</td>
+				<td><?= $Data_user['nama']?></td>
 			</tr>
 			<tr>
 				<td>Email</td>
 				<td>:</td>
-				<td>email@example.com</td>
+				<td><?= $Data_user['email']?></td>
 			</tr>
 			<tr>
 				<td>Nomor Telepon</td>
 				<td>:</td>
-				<td>08xxxxxxxxxx</td>
+				<td><?= $Data_user['no_telepon']?></td>
 			</tr>
 			<tr>
 				<td>Alamat</td>

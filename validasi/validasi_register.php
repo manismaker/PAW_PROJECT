@@ -47,4 +47,20 @@
 
         }
     }
+
+function selectAll() {
+    global $dbc;
+    $statement = "SELECT * FROM user";
+    $result = $dbc->query($statement);
+    
+    $rows = [];
+    if ($result) {
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            $rows[] = $row;
+        }
+    }
+    return $rows;
+}
+
+
 ?>

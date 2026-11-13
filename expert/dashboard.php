@@ -1,3 +1,6 @@
+<?php
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -14,7 +17,7 @@
     <a href="dashboard.php">Dashboard</a>
     <a href="profil.php">Profil</a>
     <a href="diskusi.php">Diskusi</a>
-    <a href="../logout.php">Logout</a>
+    <a href="../index.php">Logout</a>
 </div>
 
 <div class="content">

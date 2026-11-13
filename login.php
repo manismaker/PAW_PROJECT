@@ -1,69 +1,67 @@
 <?php
 
-    session_start();
+session_start();
 
-    include "config/koneksi.php";
-    include "validasi/validasi_register.php";
+include "config/koneksi.php";
+include "validasi/validasi_register.php";
 
-    // if(isset($_SESSION['login'])) {
-    //     if($_SESSION['status'] === 'expert'){
-    //         header("location: expert/dashboard.php");
-    //         exit;
-    //     } elseif($_SESSION['status'] === 'client'){
-    //         header("location: client/dashboard.php");
-    //         exit;
-    //     }
-    // }
+if(isset($_SESSION['login'])) {
+    if($_SESSION['status'] === 'expert'){
+        header("location: expert/dashboard.php");
+        exit();
+    } elseif($_SESSION['status'] === 'client'){
+        header("location: client/dashboard.php");
+        exit();
+    }
+}
 
-    $error1 = "";
-    if(isset($_POST['login'])){
-        $username = $_POST['username'] ?? '';
-        $passwd = $_POST['password'] ?? '';
-        $role = $_POST['role'] ?? '';
+$error1 = "";
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $username = $_POST['username'] ?? '';
+    $passwd = $_POST['password'] ?? '';
+    $role = $_POST['role'] ?? '';
 
-        $error = [];
-        username($error, $username);
-        password($error, $passwd);
-        role($error, $role);
+    $error = [];
+    username($error, $username);
+    password($error, $passwd);
+    role($error, $role);
 
-        if(!empty($error)){
-            $error1 = "Login gagal, input dengan benar";
-        }else{
-            $hashPW = hash('sha256', $passwd);
-            try{
-                $statement = $dbc->prepare("SELECT * FROM user WHERE nama = :username  AND password = :password AND status = :status");
-                $statement->bindValue(':username', $username);
-                $statement->bindValue(':password', $hashPW);
-                $statement->bindValue(':status', $role);
+    if(!empty($error)){
+        $error1 = "Login gagal, input dengan benar";
+    }else{
+        $hashPW = hash('sha256', $passwd);
+        try{
+            $statement = $dbc->prepare("SELECT * FROM user WHERE nama = :username  AND password = :password AND status = :status");
+            $statement->bindValue(':username', $username);
+            $statement->bindValue(':password', $hashPW);
+            $statement->bindValue(':status', $role);
 
-                $statement->execute();
+            $statement->execute();
 
-                $user = $statement->fetch(PDO::FETCH_ASSOC);
+            $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-                if($user){
-                    // Simpan sesi login
-                    $_SESSION['is_login'] = true;
-                    $_SESSION['user_id']  = $user['id'] ?? '';
-                    $_SESSION['username'] = $user['nama'];
-                    $_SESSION['status']   = $user['status'];
+            if($user){
+                // Simpan sesi login
+                $_SESSION['login'] = true;
+                $_SESSION['user_id']  = $user['id'] ?? '';
 
-                    if($user['status'] === 'expert'){
-                        header("location: expert/dashboard.php");
-                        exit;
-                    } elseif($user['status'] === 'client'){
-                        header("location: client/dashboard.php");
-                        exit;
-                    }
-                } else {
-                    // Jika data tidak ditemukan di database
-                    $error1 = "Username, password, atau role salah.";
+                if($user['status'] === 'expert'){
+                    header("location: expert/dashboard.php");
+                    exit();
+                } elseif($user['status'] === 'client'){
+                    header("location: client/dashboard.php");
+                    exit();
                 }
-            } catch(PDOException $ex) {
-                $error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
-                error_log($ex->getMessage());
+            } else {
+                // Jika data tidak ditemukan di database
+                $error1 = "Username, password, atau role salah.";
             }
+        } catch(PDOException $ex) {
+            $error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
+            error_log($ex->getMessage());
         }
     }
+}
 
 ?>
 
@@ -93,12 +91,18 @@
 								<input type="text" name="username" placeholder="Masukkan username">
 							</td>
 						</tr>
+                        <tr>
+                            <span><?= $error['nama'] ?? '' ?></span>
+                        </tr>
 						<tr>
 							<td>Password</td>
 							<td>
 								<input type="password" name="password" placeholder="Masukkan password">
 							</td>
 						</tr>
+                        <tr>
+                            <span><?= $error['passwd'] ?? '' ?></span>
+                        </tr>
                         <tr>
                             <td>Jenis Akun</td>
                             <td>
@@ -108,6 +112,9 @@
                                     <option value="expert">Expert</option>
                                 </select>
                             </td>
+                        </tr>
+                        <tr>
+                            <span><?= $error['role'] ?? '' ?></span>
                         </tr>
 						<tr>
 							<td colspan="2">
