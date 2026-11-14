@@ -1,4 +1,6 @@
 <?php
+    require __DIR__ . "/../config/koneksi.php";
+
     function nama_lengkap(&$errors, $field_list, $field_name){
         $pola = "/^[a-zA-Z\s]+$/";
 
@@ -80,5 +82,54 @@
         }
         return $rows;
     }
+
+    // fungsi JOIN agar nama_topik dan nama user ikut terambil
+    function selectAlldiskusi() {
+    global $dbc;
+    $statement = "SELECT diskusi.*, topik.nama_topik, user.nama 
+                  FROM diskusi 
+                  JOIN topik ON diskusi.id_topik = topik.id_topik
+                  JOIN user ON diskusi.id_user = user.id_user";
+    
+    $result = $dbc->query($statement);
+
+    $rows = [];
+    if ($result) {
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            $rows[] = $row;
+        }
+    }
+    return $rows;
+}
+
+//Fungsi untuk mengambil daftar topik/kategori
+function getTopik() {
+    global $dbc;
+    $statement = "SELECT * FROM topik";
+    $result = $dbc->query($statement);
+
+    $rows = [];
+    if ($result) {
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            $rows[] = $row;
+        }
+    }
+    return $rows;
+}
+
+// Fungsi untuk mengambil data user
+function getUser() {
+    global $dbc;
+    $statement = "SELECT * FROM user";
+    $result = $dbc->query($statement);
+
+    $rows = [];
+    if ($result) {
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            $rows[] = $row;
+        }
+    }
+    return $rows;
+}
 
 ?>

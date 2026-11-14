@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+include "../config/koneksi.php";
+include "../validasi/validasi_register.php";
+
+$semua_diskusi = selectAlldiskusi();
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +23,6 @@
     <a href="dashboard.php">Dashboard</a>
     <a href="diskusi.php">Diskusi Saya</a>
     <a href="profil.php">Profil</a>
-    
     <a href="../logout.php">Logout</a>
 </div>
 
@@ -29,35 +34,36 @@
         <table>
             <tr>
                 <th>No</th>
-                <th>Judul Diskusi & Deskripsi</th>
+                <th>Judul Diskusi & Isi Diskusi</th>
                 <th>Kategori</th>
                 <th>Dibuat Oleh</th>
                 <th>Tanggal</th>
             </tr>
+            <?php 
+            $no = 1;
+            if (!empty($semua_diskusi)) :
+                foreach ($semua_diskusi as $row) : 
+            ?>
             <tr>
-                <td>1</td>
+                <td><?php echo $no++; ?></td>
                 <td>
-                    <strong>Pemasangan Lampu Penerangan Jalan Umum</strong>
+                    <strong><?php echo htmlspecialchars($row['judul']); ?></strong>
                     <p style="margin: 4px 0 0 0; font-size: 13px; color: #444;">
-                        Lampu penerangan di sepanjang jalan utama RT 03 padam dan rusak sejak minggu lalu, membuat jalanan gelap dan rawan kecelakaan di malam hari.
+                        <?php echo htmlspecialchars($row['isi_aspirasi']); ?>
                     </p>
                 </td>
-                <td>Fasilitas Publik</td>
-                <td>Budi Santoso</td>
-                <td>08-11-2026</td>
+                <td><?php echo htmlspecialchars($row['nama_topik']); ?></td> 
+                <td><?php echo htmlspecialchars($row['nama']); ?></td>         
+                <td><?php echo htmlspecialchars($row['tanggal']); ?></td>
             </tr>
+            <?php 
+                endforeach; 
+            else : 
+            ?>
             <tr>
-                <td>2</td>
-                <td>
-                    <strong>Pemasangan Lampu Penerangan Jalan Umum</strong>
-                    <p style="margin: 4px 0 0 0; font-size: 13px; color: #444;">
-                        Lampu penerangan di sepanjang jalan utama RT 03 padam dan rusak sejak minggu lalu, membuat jalanan gelap dan rawan kecelakaan di malam hari.
-                    </p>
-                </td>
-                <td>Lingkungan</td>
-                <td>Siti Rahmawati</td>
-                <td>09-11-2026</td>
+                <td colspan="5" style="text-align: center;">Belum ada diskusinya.</td>
             </tr>
+            <?php endif; ?>
         </table>
     </div>
 
