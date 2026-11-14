@@ -285,9 +285,9 @@ body {
   text-decoration: none;
 }
 
-.form-login span{
-    color: red;
-    font-size: 12px;
+.form-login span {
+  color: red;
+  font-size: 12px;
 }
 
 /* Form Daftar */
@@ -345,9 +345,9 @@ body {
   text-decoration: none;
 }
 
-.form-daftar span{
-    color: red;
-    font-size: 12px;
+.form-daftar span {
+  color: red;
+  font-size: 12px;
 }
 
 /* footer (bagian bawah) */

@@ -91,6 +91,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             <p>Silakan login untuk masuk ke akun Aspirasi Daerah.</p>
 
             <div class="form-login">
+                <span><?= $error1 ?></span>
                 <form method="POST" action="login.php">
                     <table>
                         <tr>
@@ -98,7 +99,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                             <td>
                                 <input type="text" name="username" placeholder="Masukkan username" value="<?= htmlspecialchars($username) ?>">
                                 <br>
-                                <span><?= $error['username'] ?? '' ?></span>
                             </td>
                         </tr>
                         <tr>
@@ -106,12 +106,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                             <td>
                                 <input type="password" name="password" placeholder="Masukkan password">
                                 <br>
-                                <span><?= $error['password'] ?? '' ?></span>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <span><?= $error1 ?></span>
                                 <br>
                                 <button type="submit" name="login">Login</button>
                             </td>
