@@ -101,7 +101,7 @@ $diskusi_saya = getDiskusiByUser($id_user_login);
                 <td><?php echo htmlspecialchars($row['nama_topik']); ?></td>
                 <td><?php echo htmlspecialchars($row['tanggal']); ?></td>
                 <td>
-                    <a href="edit_diskusi.php?id=<?php echo $row_s['id_diskusi']; ?>">Edit</a>
+                    <a href="edit_diskusi.php?id=<?php echo $row['id_diskusi']; ?>">Edit</a>
                 </td>
             </tr>
             <?php 

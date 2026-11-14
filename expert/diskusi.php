@@ -58,7 +58,8 @@ $semua_diskusi = selectAlldiskusi();
                 <td><?php echo htmlspecialchars($row['tanggal']); ?></td>
                 <td>
                     <a href="tambah_respon.php">Berikan Tanggapan</a>
-					<a href="edit_respon.php">Edit Tanggapan</a>
+                    <br/><br/>
+                    <a href="edit_respon.php">Edit Tanggapan</a>
                 </td>
             </tr>
             <?php 
