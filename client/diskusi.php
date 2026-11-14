@@ -5,6 +5,10 @@ include "../config/koneksi.php";
 include "../validasi/validasi_register.php";
 
 $semua_diskusi = selectAlldiskusi();
+
+$id_user_login = $_SESSION['id'] ?? ($_SESSION['user_id'] ?? ($_SESSION['id_user'] ?? 0));
+// Ambil khusus diskusi milik user yang sedang login untuk tabel bawah
+$diskusi_saya = getDiskusiByUser($id_user_login);
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +16,7 @@ $semua_diskusi = selectAlldiskusi();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diskusi Saya - Aspirasi Daerah</title>
+    <title>Daftar Diskusi - Aspirasi Daerah</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -21,7 +25,7 @@ $semua_diskusi = selectAlldiskusi();
 
 <div class="menu">
     <a href="dashboard.php">Dashboard</a>
-    <a href="diskusi.php">Diskusi Saya</a>
+    <a href="diskusi.php">Diskusi</a>
     <a href="profil.php">Profil</a>
     <a href="../logout.php">Logout</a>
 </div>
@@ -61,7 +65,7 @@ $semua_diskusi = selectAlldiskusi();
             else : 
             ?>
             <tr>
-                <td colspan="5" style="text-align: center;">Belum ada diskusinya.</td>
+                <td colspan="5" style="text-align: center;">Belum ada diskusi.</td>
             </tr>
             <?php endif; ?>
         </table>
@@ -86,26 +90,29 @@ $semua_diskusi = selectAlldiskusi();
                 <th>Tanggal</th>
                 <th>Aksi</th>
             </tr>
-
+            <?php 
+            $no = 1;
+            if (!empty($diskusi_saya)) :
+                foreach ($diskusi_saya as $row) : 
+            ?>
             <tr>
-                <td>1</td>
-                <td>Perbaikan Jalan di Wilayah Desa</td>
-                <td>Infrastruktur</td>
-                <td>10-11-2026</td>
+                <td><?php echo $no++; ?></td>
+                <td><?php echo htmlspecialchars($row['judul']); ?></td>
+                <td><?php echo htmlspecialchars($row['nama_topik']); ?></td>
+                <td><?php echo htmlspecialchars($row['tanggal']); ?></td>
                 <td>
-                    <a href="edit_diskusi.php">Edit</a>
+                    <a href="edit_diskusi.php?id=<?php echo $row_s['id_diskusi']; ?>">Edit</a>
                 </td>
             </tr>
-
+            <?php 
+                endforeach; 
+            else : 
+            ?>
             <tr>
-                <td>2</td>
-                <td>Peningkatan Fasilitas Sekolah</td>
-                <td>Pendidikan</td>
-                <td>11-11-2026</td>
-                <td>
-                    <a href="edit_diskusi.php">Edit</a>
-                </td>
+                <td colspan="5" style="text-align: center;">Belum ada diskusi.</td>
             </tr>
+            <?php endif; ?>
+
         </table>
     </div>
 

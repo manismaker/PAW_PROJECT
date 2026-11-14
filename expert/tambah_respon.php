@@ -14,7 +14,6 @@
     <a href="dashboard.php">Dashboard</a>
     <a href="diskusi.php">Diskusi</a>
     <a href="profil.php">Profil</a>
-    
     <a href="../logout.php">Logout</a>
 </div>
 

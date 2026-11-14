@@ -131,5 +131,27 @@ function getUser() {
     }
     return $rows;
 }
+//fungsi nambahin diskusi
+function tambah_diskusi($judul, $isi_aspirasi, $id_topik,$id_user){
+    global $dbc;
+    $statement = $dbc->prepare("INSERT INTO diskusi (judul, isi_aspirasi, id_topik, id_user, tanggal) 
+                            VALUES (:judul, :isi_aspirasi, :id_topik, :id_user, NOW())");
+    return $statement->execute([
+        'judul' => $judul,
+        'isi_aspirasi' => $isi_aspirasi,
+        'id_topik' => $id_topik,
+        'id_user' => $id_user
+    ]);
+}
+// Fungsi untuk menampilkan diskusi milik user yang sedang login saja
+function getDiskusiByUser($id_user) {
+    global $dbc;
+    $statement = $dbc->prepare("SELECT diskusi.*, topik.nama_topik 
+                                FROM diskusi 
+                                JOIN topik ON diskusi.id_topik = topik.id_topik 
+                                WHERE diskusi.id_user = :id_user");
+    $statement->execute(['id_user' => $id_user]);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
 
 ?>

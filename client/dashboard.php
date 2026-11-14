@@ -15,9 +15,8 @@
 
 <div class="menu">
     <a href="dashboard.php">Dashboard</a>
-    <a href="diskusi.php">Diskusi Saya</a>
+    <a href="diskusi.php">Diskusi</a>
     <a href="profil.php">Profil</a>
-    
     <a href="../logout.php">Logout</a>
 </div>
 
@@ -40,7 +39,7 @@
             </div>
 
             <div class="kartu-fitur">
-                <h3>Diskusi Saya</h3>
+                <h3>Diskusi</h3>
                 <p>Lihat dan kelola topik diskusi yang telah dibuat.</p>
                 <a href="diskusi.php">Lihat Diskusi</a>
             </div>

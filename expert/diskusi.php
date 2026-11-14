@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+include "../config/koneksi.php";
+include "../validasi/validasi_register.php";
+
+$semua_diskusi = selectAlldiskusi();
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -14,7 +22,6 @@
     <a href="dashboard.php">Dashboard</a>
     <a href="diskusi.php">Diskusi</a>
     <a href="profil.php">Profil</a>
-    
     <a href="../logout.php">Logout</a>
 </div>
 
@@ -27,48 +34,41 @@
         <table>
             <tr>
                 <th>No</th>
-                <th>Judul Diskusi</th>
+                <th>Judul Diskusi & Isi Diskusi</th>
                 <th>Kategori</th>
                 <th>Pengirim</th>
                 <th>Tanggal</th>
                 <th>Aksi</th>
             </tr>
-
+            <?php
+            $no=1;
+            if(!empty($semua_diskusi)):
+                foreach($semua_diskusi as $row):
+            ?>
             <tr>
-                <td>1</td>
-                <td>Perbaikan Jalan di Wilayah Desa</td>
-                <td>Infrastruktur</td>
-                <td>Client 1</td>
-                <td>10-11-2026</td>
+                <td><?php echo $no++;?></td>
+                <td>
+                    <strong><?php echo htmlspecialchars($row['judul']); ?></strong>
+                    <p style="margin: 4px 0 0 0; font-size: 13px; color: #444;">
+                        <?php echo htmlspecialchars($row['isi_aspirasi']); ?>
+                    </p>
+                </td>
+                <td><?php echo htmlspecialchars($row['nama_topik']); ?></td>
+                <td><?php echo htmlspecialchars($row['nama']); ?></td>
+                <td><?php echo htmlspecialchars($row['tanggal']); ?></td>
                 <td>
                     <a href="tambah_respon.php">Berikan Tanggapan</a>
 					<a href="edit_respon.php">Edit Tanggapan</a>
                 </td>
             </tr>
-
+            <?php 
+                endforeach; 
+            else : 
+            ?>
             <tr>
-                <td>2</td>
-                <td>Peningkatan Fasilitas Sekolah</td>
-                <td>Pendidikan</td>
-                <td>Client 2</td>
-                <td>11-11-2026</td>
-                <td>
-                    <a href="tambah_respon.php">Berikan Tanggapan</a>
-					<a href="edit_respon.php">Edit Tanggapan</a>
-                </td>
+                <td colspan="5" style="text-align: center;">Belum ada diskusi.</td>
             </tr>
-
-            <tr>
-                <td>3</td>
-                <td>Pengelolaan Sampah di Lingkungan Desa</td>
-                <td>Lingkungan</td>
-                <td>Client 3</td>
-                <td>12-11-2026</td>
-                <td>
-                    <a href="tambah_respon.php">Berikan Tanggapan</a>
-					<a href="edit_respon.php">Edit Tanggapan</a>
-                </td>
-            </tr>
+            <?php endif; ?>
         </table>
     </div>
 

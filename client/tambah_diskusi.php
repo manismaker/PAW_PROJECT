@@ -1,4 +1,32 @@
 <?php
+session_start();
+
+include "../config/koneksi.php";
+include "../validasi/validasi_register.php";
+$pesan_error = "";
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan'])) {
+    $judul        = trim($_POST['judul'] ?? '');
+    $id_topik     = $_POST['kategori'] ?? ''; 
+    $isi_aspirasi = trim($_POST['isi_diskusi'] ?? '');
+    $id_user      = $_SESSION['id'] ?? 0;     
+
+    // Validasi sederhana agar tidak kosong
+    if (empty($judul) || empty($id_topik) || empty($isi_aspirasi)) {
+        $pesan_error = "Semua kolom wajib diisi!";
+    }// Panggil fungsi tambah_diskusi yang sudah kita buat 
+    else {
+        $sukses = tambah_diskusi($judul, $isi_aspirasi, $id_topik, $id_user);
+        // Jika berhasil disimpan, alihkan kembali ke halaman diskusi
+        if ($sukses) {
+            header("location: diskusi.php");
+            exit();
+        } else {
+            $pesan_error = "Gagal menyimpan diskusi ke database.";
+        }
+    }
+}
+
+$daftar_topik = getTopik();
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +43,7 @@
 
 <div class="menu">
     <a href="dashboard.php">Dashboard</a>
-    <a href="diskusi.php">Diskusi Saya</a>
+    <a href="diskusi.php">Diskusi</a>
     <a href="profil.php">Profil</a>
     
     <a href="../logout.php">Logout</a>
@@ -39,16 +67,22 @@
                 <tr>
                     <td>Kategori</td>
                     <td>
-                        <select name="kategori">
+                        <select name="kategori" required>
                             <option value="">Pilih Kategori</option>
-                            <option value="Pendidikan">Pendidikan</option>
-                            <option value="Kesehatan">Kesehatan</option>
-                            <option value="Infrastruktur">Infrastruktur</option>
-                            <option value="Ekonomi">Ekonomi</option>
-                            <option value="Lingkungan">Lingkungan</option>
-                            <option value="Pelayanan Publik">Pelayanan Publik</option>
-                            <option value="Sosial dan Budaya">Sosial dan Budaya</option>
-                            <option value="Keamanan dan Ketertiban">Keamanan dan Ketertiban</option>
+                            <?php 
+                            // Mengambil data topik dari database secara dinamis
+                            $daftar_topik = getTopik();
+                            if (!empty($daftar_topik)) :
+                                foreach ($daftar_topik as $topik) : 
+                            ?>
+                                <!-- Value diisi id_topik agar sesuai dengan relasi database -->
+                                <option value="<?php echo $topik['id_topik']; ?>">
+                                    <?php echo htmlspecialchars($topik['nama_topik']); ?>
+                                </option>
+                            <?php 
+                                endforeach; 
+                            endif; 
+                            ?>
                         </select>
                     </td>
                 </tr>
@@ -69,7 +103,7 @@
         </form>
 
         <p class="kembali-diskusi">
-            <a href="diskusi.php">Kembali ke Diskusi Saya</a>
+            <a href="diskusi.php">Kembali ke Diskusi</a>
         </p>
     </div>
 
