@@ -1,13 +1,7 @@
 <?php 
-session_start();
+include "../validasi/permission.php";
 include "../config/koneksi.php";
-include "../validasi/validasi_register.php";
-
-// 1. Cek apakah user sudah login. Jika belum, kembalikan ke halaman login
-if (!isset($_SESSION['login'])) {
-    header("Location: ../login.php");
-    exit();
-}
+include "../validasi/validasi_inputan.php";
 
 $user_id = $_SESSION['id'];
 $error1 = "";
@@ -32,17 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error1 = "Perubahan profil gagal, pastikan semua input diisi dengan benar.";
     } else {
         try {
-            $statement = $dbc->prepare("UPDATE user SET nama_lengkap = :nama_lengkap, nama = :username, email = :email, no_telepon = :no_telepon, alamat = :alamat WHERE id_user = :id_user");
-            $statement->bindValue(':nama_lengkap', $nama_lengkap);
-            $statement->bindValue(':username', $username);
-            $statement->bindValue(':email', $email);
-            $statement->bindValue(':no_telepon', $telepon);
-            $statement->bindValue(':alamat', $alamat);
-            $statement->bindValue(':id_user', $user_id);
-            $statement->execute();
-
-            header("Location: profil.php?status=sukses");
-            exit();
+            update_profil($user_id, $nama_lengkap, $username, $email, $telepon, $alamat);
+            $sukses = "Profil berhasil diperbarui!";
         } catch (PDOException $ex) {
             $error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
             error_log("Error Update Profil: " . $ex->getMessage());
@@ -64,7 +49,8 @@ try {
         exit();
     }
 } catch (PDOException $ex) {
-    die("Gagal mengambil data profil.");
+    $error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
+    error_log($ex->getMessage());
 }
 
 // Tampung ke variabel agar mudah dipanggil di HTML

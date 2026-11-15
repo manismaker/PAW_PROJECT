@@ -1,4 +1,5 @@
 <?php
+include "../validasi/permission.php";
 ?>
 
 <!DOCTYPE html>

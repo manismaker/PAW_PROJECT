@@ -1,10 +1,10 @@
 <?php
-session_start();
-
+include "../validasi/permission.php";
 include "../config/koneksi.php";
-include "../validasi/validasi_register.php";
+include "../validasi/validasi_inputan.php";
 
 $semua_diskusi = selectAlldiskusi();
+$semua_respon = selectAllrespon();
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -31,7 +31,7 @@ $semua_diskusi = selectAlldiskusi();
     <p>Lihat berbagai topik aspirasi masyarakat dan berikan tanggapan yang bermanfaat.</p>
 
     <div class="tabel-diskusi">
-        <table>
+                <table>
             <tr>
                 <th>No</th>
                 <th>Judul Diskusi & Isi Diskusi</th>
@@ -41,25 +41,40 @@ $semua_diskusi = selectAlldiskusi();
                 <th>Aksi</th>
             </tr>
             <?php
-            $no=1;
-            if(!empty($semua_diskusi)):
-                foreach($semua_diskusi as $row):
+            $no = 1;
+            if (!empty($semua_diskusi)):
+                foreach ($semua_diskusi as $row):
             ?>
             <tr>
-                <td><?php echo $no++;?></td>
+                <td><?php echo $no++; ?></td>
                 <td>
+                    <!-- Aspirasi Client -->
                     <strong><?php echo htmlspecialchars($row['judul']); ?></strong>
-                    <p style="margin: 4px 0 0 0; font-size: 13px; color: #444;">
+                    <p style="margin: 4px 0 8px 0; font-size: 13px; color: #444;">
                         <?php echo htmlspecialchars($row['isi_aspirasi']); ?>
                     </p>
+                    <hr/>
+                    <!-- Tanggapan Expert (Hanya muncul jika id_diskusi cocok) -->
+                    <?php if (!empty($semua_respon)): ?>
+                        <?php foreach ($semua_respon as $row1): ?>
+                            <?php if ($row1['id_diskusi'] == $row['id_diskusi']): ?>
+                                <div>
+                                    <strong>Tanggapan (<?php echo htmlspecialchars($row1['nama']); ?>):</strong>
+                                    <p>
+                                        <?php echo htmlspecialchars($row1['isi_respon']); ?>
+                                    </p>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </td>
                 <td><?php echo htmlspecialchars($row['nama_topik']); ?></td>
                 <td><?php echo htmlspecialchars($row['nama']); ?></td>
                 <td><?php echo htmlspecialchars($row['tanggal']); ?></td>
                 <td>
-                    <a href="tambah_respon.php">Berikan Tanggapan</a>
+                    <a href="tambah_respon.php?id_diskusi=<?= $row['id_diskusi'] ?>">Berikan Tanggapan</a>
                     <br/><br/>
-                    <a href="edit_respon.php">Edit Tanggapan</a>
+                    <a href="edit_respon.php?id_diskusi=<?= $row['id_diskusi'] ?>">Edit Tanggapan</a>
                 </td>
             </tr>
             <?php 
@@ -67,10 +82,11 @@ $semua_diskusi = selectAlldiskusi();
             else : 
             ?>
             <tr>
-                <td colspan="5" style="text-align: center;">Belum ada diskusi.</td>
+                <td colspan="6" style="text-align: center;">Belum ada diskusi.</td>
             </tr>
             <?php endif; ?>
         </table>
+
     </div>
 
 </div>

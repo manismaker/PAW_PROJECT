@@ -1,8 +1,8 @@
 <?php
-session_start();
-
+include "../validasi/permission.php";
 include "../config/koneksi.php";
-include "../validasi/validasi_register.php";
+include "../validasi/validasi_inputan.php";
+
 $pesan_error = "";
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan'])) {
     $judul        = trim($_POST['judul'] ?? '');

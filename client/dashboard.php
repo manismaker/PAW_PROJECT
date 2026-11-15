@@ -1,4 +1,5 @@
 <?php
+include "../permission.php";
 ?>
 
 <!DOCTYPE html>

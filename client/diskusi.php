@@ -1,10 +1,10 @@
 <?php
-session_start();
-
+include "../validasi/permission.php";
 include "../config/koneksi.php";
-include "../validasi/validasi_register.php";
+include "../validasi/validasi_inputan.php";
 
 $semua_diskusi = selectAlldiskusi();
+$semua_respon = selectAllrespon();
 
 $id_user_login = $_SESSION['id'] ?? ($_SESSION['user_id'] ?? ($_SESSION['id_user'] ?? 0));
 // Ambil khusus diskusi milik user yang sedang login untuk tabel bawah
@@ -55,6 +55,19 @@ $diskusi_saya = getDiskusiByUser($id_user_login);
                     <p style="margin: 4px 0 0 0; font-size: 13px; color: #444;">
                         <?php echo htmlspecialchars($row['isi_aspirasi']); ?>
                     </p>
+                    <hr/>
+                    <?php if (!empty($semua_respon)): ?>
+                        <?php foreach ($semua_respon as $row1): ?>
+                            <?php if ($row1['id_diskusi'] == $row['id_diskusi']): ?>
+                                <div>
+                                    <strong>Tanggapan (<?php echo htmlspecialchars($row1['nama']); ?>):</strong>
+                                    <p>
+                                        <?php echo htmlspecialchars($row1['isi_respon']); ?>
+                                    </p>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </td>
                 <td><?php echo htmlspecialchars($row['nama_topik']); ?></td> 
                 <td><?php echo htmlspecialchars($row['nama']); ?></td>         

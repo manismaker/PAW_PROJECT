@@ -1,13 +1,7 @@
 <?php 
-session_start();
+include "../validasi/permission.php";
 include "../config/koneksi.php";
-include "../validasi/validasi_register.php";
-
-// 1. Cek apakah user sudah login. Jika belum, kembalikan ke halaman login
-if (!isset($_SESSION['login'])) {
-    header("Location: ../login.php");
-    exit();
-}
+include "../validasi/validasi_inputan.php";
 
 $user_id = $_SESSION['id'];
 $error1 = "";

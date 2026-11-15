@@ -1,3 +1,23 @@
+<?php
+include "../validasi/permission.php";
+include "../config/koneksi.php";
+include "../validasi/validasi_inputan.php";
+
+$id_respon = $_SESSION['id_respon'];
+
+try{
+    $statement = $dbc->prepare("UPDATE respon SET isi_respon = :isi_respon WHERE id_respon = :id_respon");
+    $statement->bindValue(':id_respon', $id_respon);
+    $statement->execute();
+
+    $Data_respon = $statement->fetch(PDO::FETCH_ASSOC);
+    var_dump($Data_respon);
+}catch(PDOException $ex){
+
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>

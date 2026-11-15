@@ -83,10 +83,23 @@
         return $rows;
     }
 
+    function selectAllrespon() {
+        global $dbc;
+        $statement = "SELECT respon.*, user.nama FROM respon JOIN user ON respon.id_user = user.id_user ";
+        $result = $dbc->query($statement);
+
+        $rows = [];
+        if ($result) {
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                $rows[] = $row;
+            }
+        }
+        return $rows;
+    }
     // fungsi JOIN agar nama_topik dan nama user ikut terambil
     function selectAlldiskusi() {
     global $dbc;
-    $statement = "SELECT diskusi.*, topik.nama_topik, user.nama 
+    $statement = "SELECT diskusi.*, topik.*, user.* 
                   FROM diskusi 
                   JOIN topik ON diskusi.id_topik = topik.id_topik
                   JOIN user ON diskusi.id_user = user.id_user";
@@ -136,13 +149,54 @@ function tambah_diskusi($judul, $isi_aspirasi, $id_topik,$id_user){
     global $dbc;
     $statement = $dbc->prepare("INSERT INTO diskusi (judul, isi_aspirasi, id_topik, id_user, tanggal) 
                             VALUES (:judul, :isi_aspirasi, :id_topik, :id_user, NOW())");
-    return $statement->execute([
-        'judul' => $judul,
-        'isi_aspirasi' => $isi_aspirasi,
-        'id_topik' => $id_topik,
-        'id_user' => $id_user
-    ]);
+    $satement->bindValue(':judul', $judul);
+    $satement->bindValue(':isi_aspirasi', $isi_aspirasi);
+    $satement->bindValue(':id_topik', $id_topik);
+    $satement->bindValue(':id_user', $id_user);
+
+    return $statement->execute();
 }
+
+function tambah_respon($isi_respon, $id_diskusi, $id_user){
+    global $dbc;
+    $statement = $dbc->prepare("INSERT INTO respon (isi_respon, id_diskusi, id_user, tgl_respon) VALUES (:isi_respon, :id_diskusi, :id_user, NOW())");
+
+    $statement->bindValue(':isi_respon', $isi_respon);
+    $statement->bindValue(':id_diskusi', $id_diskusi);
+    $statement->bindValue(':id_user', $id_user);
+
+    $result = $statement->execute();
+
+    return $result;
+}
+
+function update_respon($isi_respon, $id_diskusi, $id_user){
+    global $dbc;
+    $statement = $dbc->prepare("UPDATE respon SET isi_respon = :isi_respon, id_diskusi = :id_diskusi, id_user = :id_user, tgl_respon = NOW())");
+
+    $statement->bindValue(':isi_respon', $isi_respon);
+    $statement->bindValue(':id_diskusi', $id_diskusi);
+    $statement->bindValue(':id_user', $id_user);
+
+    $result = $statement->execute();
+
+    return $result;
+}
+
+function update_profil($id_user, $nama_lengkap, $username, $email, $no_telepon, $alamat){
+    global $dbc;
+    $statement = $dbc->prepare("UPDATE user SET nama_lengkap = :nama_lengkap, nama = :username, email = :email, no_telepon = :no_telepon, alamat = :alamat WHERE id_user = :id_user");
+    $statement->bindValue(':nama_lengkap', $nama_lengkap);
+    $statement->bindValue(':username', $username);
+    $statement->bindValue(':email', $email);
+    $statement->bindValue(':no_telepon', $no_telepon);
+    $statement->bindValue(':alamat', $alamat);
+    $statement->bindValue(':id_user', $id_user);
+
+    header("Location: profil.php?status=sukses");
+    return $statement->execute();
+}
+
 // Fungsi untuk menampilkan diskusi milik user yang sedang login saja
 function getDiskusiByUser($id_user) {
     global $dbc;
@@ -152,6 +206,12 @@ function getDiskusiByUser($id_user) {
                                 WHERE diskusi.id_user = :id_user");
     $statement->execute(['id_user' => $id_user]);
     return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function validateTanggapan($error, $tanggapan){
+    if(!isset($tanggapan) || empty(trim($tanggapan))){
+        $error['isi_respon'] = "Tanggapan harus diisi";
+}
 }
 
 ?>
