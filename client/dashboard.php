@@ -1,5 +1,5 @@
 <?php
-include "../permission.php";
+include "../validasi/permission.php";
 ?>
 
 <!DOCTYPE html>

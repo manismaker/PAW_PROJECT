@@ -3,7 +3,7 @@
     session_start();
 
     include "config/koneksi.php";
-    include "validasi/validasi_register.php";
+    include "validasi/validasi_inputan.php";
 
     if(isset($_SESSION['login'])) {
         if($_SESSION['status'] === 'expert'){

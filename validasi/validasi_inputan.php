@@ -99,7 +99,7 @@
     // fungsi JOIN agar nama_topik dan nama user ikut terambil
     function selectAlldiskusi() {
     global $dbc;
-    $statement = "SELECT diskusi.*, topik.*, user.* 
+    $statement = "SELECT diskusi.*, topik.nama_topik, user.nama
                   FROM diskusi 
                   JOIN topik ON diskusi.id_topik = topik.id_topik
                   JOIN user ON diskusi.id_user = user.id_user";
@@ -170,13 +170,15 @@ function tambah_respon($isi_respon, $id_diskusi, $id_user){
     return $result;
 }
 
-function update_respon($isi_respon, $id_diskusi, $id_user){
+function update_respon($isi_respon, $id_diskusi, $id_user, $id_respon){
     global $dbc;
-    $statement = $dbc->prepare("UPDATE respon SET isi_respon = :isi_respon, id_diskusi = :id_diskusi, id_user = :id_user, tgl_respon = NOW())");
+    // Hapus tanda ')' di akhir query
+    $statement = $dbc->prepare("UPDATE respon SET isi_respon = :isi_respon, id_diskusi = :id_diskusi, id_user = :id_user, tgl_respon = NOW() WHERE id_respon = :id_respon");
 
     $statement->bindValue(':isi_respon', $isi_respon);
     $statement->bindValue(':id_diskusi', $id_diskusi);
     $statement->bindValue(':id_user', $id_user);
+    $statement->bindValue(':id_respon', $id_respon);
 
     $result = $statement->execute();
 

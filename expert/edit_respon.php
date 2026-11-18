@@ -3,17 +3,68 @@ include "../validasi/permission.php";
 include "../config/koneksi.php";
 include "../validasi/validasi_inputan.php";
 
-$id_respon = $_SESSION['id_respon'];
+$error1 = "";
+// Ubah bagian ini
+$id_diskusi = $_GET['id_diskusi'] ?? $_POST['id_diskusi'] ?? null;
+$id_user = $_SESSION['id'] ?? null;
+$id_respon = $_GET['id_respon'] ?? $_POST['id_respon'] ?? null;
+var_dump($id_respon);
 
-try{
-    $statement = $dbc->prepare("UPDATE respon SET isi_respon = :isi_respon WHERE id_respon = :id_respon");
-    $statement->bindValue(':id_respon', $id_respon);
+$error = [];
+
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $isi_respon = $_POST['isi_respon'];
+    validateTanggapan($error, $isi_respon);
+    try{
+    update_respon($isi_respon, $id_diskusi, $id_user, $id_respon);
+
+    header("Location: diskusi.php?id_diskusi=$id_diskusi&status=sukses");
+    exit();
+    }catch(PDOException $ex){
+        $error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
+        error_log($ex->getMessage());
+    }
+}
+
+try {
+    $statement = $dbc->prepare("SELECT 
+                                    r.id_user AS pemilik_respon, /* <-- TAMBAHKAN INI */
+                                    d.id_diskusi,
+                                    d.judul,
+                                    t.nama_topik AS kategori,
+                                    u.nama AS pengirim,
+                                    d.isi_aspirasi AS isi_diskusi,
+                                    r.isi_respon 
+                                FROM 
+                                    respon r
+                                JOIN 
+                                    diskusi d ON r.id_diskusi = d.id_diskusi
+                                JOIN 
+                                    user u ON d.id_user = u.id_user
+                                JOIN 
+                                    topik t ON d.id_topik = t.id_topik
+                                WHERE 
+                                    r.id_respon = :id_respon");
+    
+    $statement->bindValue(':id_respon', $id_respon); 
     $statement->execute();
+    $Data_diskusi = $statement->fetch(PDO::FETCH_ASSOC);
 
-    $Data_respon = $statement->fetch(PDO::FETCH_ASSOC);
-    var_dump($Data_respon);
-}catch(PDOException $ex){
+    // Jika data tidak ditemukan
+    if (!$Data_diskusi) {
+        header("Location: diskusi.php");
+        exit();
+    }
 
+    // --- TAMBAHKAN BLOK PENGECEKAN INI ---
+    // Jika ID pembuat respon tidak sama dengan ID user yang sedang login
+    if ($Data_diskusi['pemilik_respon'] != $id_user) {
+        header("Location: diskusi.php?status=akses_ditolak");
+        exit();
+    }
+} catch (PDOException $ex) {
+    $error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
+    error_log($ex->getMessage());
 }
 
 ?>
@@ -45,27 +96,29 @@ try{
 
     <div class="informasi-diskusi">
         <h3>Informasi Diskusi</h3>
-
         <table>
             <tr>
                 <td>Judul Diskusi</td>
                 <td>:</td>
-                <td>Perbaikan Jalan di Wilayah Desa</td>
+                <td><?= htmlspecialchars($Data_diskusi['judul'] ?? '') ?></td>
             </tr>
             <tr>
                 <td>Kategori</td>
                 <td>:</td>
-                <td>Infrastruktur</td>
+                <!-- PERBAIKAN DI SINI: Sesuaikan dengan alias di query (kategori) -->
+                <td><?= htmlspecialchars($Data_diskusi['kategori'] ?? '') ?></td> 
             </tr>
             <tr>
                 <td>Pengirim</td>
                 <td>:</td>
-                <td>Client 1</td>
+                <!-- PERBAIKAN DI SINI: Sesuaikan dengan alias di query (pengirim) -->
+                <td><?= htmlspecialchars($Data_diskusi['pengirim'] ?? '') ?></td> 
             </tr>
             <tr>
                 <td>Isi Diskusi</td>
                 <td>:</td>
-                <td>Kondisi jalan di wilayah desa masih rusak dan membutuhkan perbaikan.</td>
+                <!-- PERBAIKAN DI SINI: Sesuaikan dengan alias di query (isi_diskusi) -->
+                <td><?= htmlspecialchars($Data_diskusi['isi_diskusi'] ?? '') ?></td> 
             </tr>
         </table>
     </div>
@@ -74,12 +127,13 @@ try{
         <h3>Edit Tanggapan</h3>
 
         <form method="POST" action="edit_respon.php">
+            <input type="hidden" name="id_respon" value="<?= htmlspecialchars($id_respon) ?>">
+            <input type="hidden" name="id_diskusi" value="<?= htmlspecialchars($Data_diskusi['id_diskusi'] ?? '') ?>">
             <table>
                 <tr>
                     <td>Tanggapan</td>
                     <td>
-                        <textarea name="isi_respon">Perbaikan jalan perlu menjadi perhatian pemerintah daerah agar akses masyarakat menjadi lebih baik.</textarea>
-                    </td>
+                        <textarea name="isi_respon"><?= htmlspecialchars($Data_diskusi['isi_respon'] ?? '') ?></textarea>   
                 </tr>
                 <tr>
                     <td colspan="2">

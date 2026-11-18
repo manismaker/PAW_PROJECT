@@ -1,62 +1,55 @@
 <?php
+// Pastikan session_start() sudah dipanggil di dalam permission.php
 include "../validasi/permission.php";
 include "../config/koneksi.php";
 include "../validasi/validasi_inputan.php";
 
-if(isset($_SESSION['login']) && $_SESSION['login'] === true) {
-    if($_SESSION['status'] === 'expert'){
-        header("location: expert/dashboard.php");
-        exit();
-    } elseif($_SESSION['status'] === 'client'){
-        header("location: client/dashboard.php");
-        exit();
-    }
-}
-
 $id_diskusi = $_GET['id_diskusi'] ?? null;
-$id_user    = $_SESSION['id'] ?? $_SESSION['id_user'] ?? null; 
+$id_user = $_SESSION['id'] ?? $_SESSION['id_user'] ?? null;
 
-if (!$id_diskusi) {
+// Pastikan id_diskusi valid dan user sudah login
+if (!$id_diskusi || !$id_user) {
     header("Location: diskusi.php");
     exit();
 }
 
 $error1 = "";
-$error  = [];
+$error = [];
 
+// Proses saat form dikirim (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $tanggapan = $_POST['isi_respon'] ?? '';
-
+    $tanggapan = trim($_POST['isi_respon'] ?? '');
     validateTanggapan($error, $tanggapan);
 
     if (!empty($error)) {
-        $error1 = "Anda harus mengisi tanggapan sebelum mengirim."; 
+        $error1 = "Anda harus mengisi tanggapan sebelum mengirim.";
     } else {
         try {
-            update_respon($tanggapan, $id_diskusi, $id_user);
-            header("Location: edit_respon.php?id_diskusi=$id_diskusi&status=sukses");
+            // Pastikan fungsi tambah_respon memiliki akses ke $dbc (atau kirimkan sebagai parameter)
+            tambah_respon($tanggapan, $id_diskusi, $id_user);
+            
+            // Gunakan urlencode untuk keamanan parameter URL
+            header("Location: diskusi.php?id_diskusi=" . urlencode($id_diskusi) . "&status=sukses");
             exit();
         } catch (PDOException $ex) {
-            error_log("Gagal memperbarui tanggapan: " . $ex->getMessage());
-            $error1 = "Terjadi kesalahan saat memperbarui tanggapan.";
+            error_log("Gagal menambah tanggapan: " . $ex->getMessage());
+            $error1 = "Terjadi kesalahan saat menyimpan tanggapan.";
         }
     }
 }
 
+// Ambil detail diskusi yang akan direspon (tanpa JOIN ke tabel respon)
 try {
-    $statement = $dbc->prepare("SELECT diskusi.*, topik.nama_topik, user.nama, respon.id_respon, respon.isi_respon
-                                FROM diskusi 
-                                JOIN topik ON diskusi.id_topik = topik.id_topik
-                                JOIN user ON diskusi.id_user = user.id_user
-                                JOIN respon ON diskusi.id_diskusi = respon.id_diskusi
-                                WHERE diskusi.id_diskusi = :id_diskusi");
-
+    $statement = $dbc->prepare("SELECT diskusi.*, topik.nama_topik, user.nama 
+        FROM diskusi 
+        JOIN topik ON diskusi.id_topik = topik.id_topik 
+        JOIN user ON diskusi.id_user = user.id_user 
+        WHERE diskusi.id_diskusi = :id_diskusi");
     $statement->bindValue(':id_diskusi', $id_diskusi);
     $statement->execute();
+    $Data_diskusi = $statement->fetch(PDO::FETCH_ASSOC);
 
-    $Data_respon = $statement->fetch(PDO::FETCH_ASSOC);
-
-    if (!$Data_respon) {
+    if (!$Data_diskusi) {
         header("Location: diskusi.php");
         exit();
     }
@@ -64,8 +57,8 @@ try {
     $error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
     error_log($ex->getMessage());
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="id">
@@ -88,7 +81,7 @@ try {
 
 <div class="content">
 
-    <h2>Edit Tanggapan</h2>
+    <h2>Tambah Tanggapan</h2>
     <p>Perbarui tanggapan yang telah Anda berikan pada topik diskusi.</p>
 
     <?php if (isset($_GET['status']) && $_GET['status'] === 'sukses'): ?>
@@ -106,40 +99,41 @@ try {
             <tr>
                 <td>Judul Diskusi</td>
                 <td>:</td>
-                <td><?= htmlspecialchars($Data_respon['judul']) ?></td>
+                <td><?= htmlspecialchars($Data_diskusi['judul']) ?></td>
             </tr>
             <tr>
                 <td>Kategori</td>
                 <td>:</td>
-                <td><?= htmlspecialchars($Data_respon['nama_topik']) ?></td>
+                <td><?= htmlspecialchars($Data_diskusi['nama_topik']) ?></td>
             </tr>
             <tr>
                 <td>Pengirim</td>
                 <td>:</td>
-                <td><?= htmlspecialchars($Data_respon['nama']) ?></td>
+                <td><?= htmlspecialchars($Data_diskusi['nama']) ?></td>
             </tr>
             <tr>
                 <td>Isi Diskusi</td>
                 <td>:</td>
-                <td><?= htmlspecialchars($Data_respon['isi_aspirasi']) ?></td>
+                <td><?= htmlspecialchars($Data_diskusi['isi_aspirasi']) ?></td>
             </tr>
         </table>
     </div>
 
     <div class="form-respon">
-        <h3>Edit Tanggapan</h3>
+        <h3>Tambah Tanggapan</h3>
 
         <form method="POST" action="">
             <table>
                 <tr>
                     <td>Tanggapan</td>
+                    <td>:</td>
                     <td>
-                        <textarea name="isi_respon"><?= htmlspecialchars($Data_respon['isi_respon']) ?></textarea>
+                        <textarea name="isi_respon" placeholder="Contoh: Terimakasih atas kritik"></textarea>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
-                        <button type="submit" name="simpan">Simpan Perubahan</button>
+                    <td colspan="3">
+                        <button type="submit" name="simpan">Simpan Tanggapan</button>
                     </td>
                 </tr>
             </table>

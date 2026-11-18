@@ -5,6 +5,7 @@ include "../validasi/validasi_inputan.php";
 
 $semua_diskusi = selectAlldiskusi();
 $semua_respon = selectAllrespon();
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -54,19 +55,24 @@ $semua_respon = selectAllrespon();
                         <?php echo htmlspecialchars($row['isi_aspirasi']); ?>
                     </p>
                     <hr/>
-                    <!-- Tanggapan Expert (Hanya muncul jika id_diskusi cocok) -->
-                    <?php if (!empty($semua_respon)): ?>
                         <?php foreach ($semua_respon as $row1): ?>
                             <?php if ($row1['id_diskusi'] == $row['id_diskusi']): ?>
                                 <div>
                                     <strong>Tanggapan (<?php echo htmlspecialchars($row1['nama']); ?>):</strong>
+                                    <!-- expert yang login doang yang bisa edit responnya sendiri -->
                                     <p>
-                                        <?php echo htmlspecialchars($row1['isi_respon']); ?>
+                                        <?php if ($row1['id_user'] == $_SESSION['id']): ?>
+                                            <a href="edit_respon.php?id_respon=<?= $row1['id_respon'] ?>">
+                                                <?= htmlspecialchars($row1['isi_respon']); ?> (Edit)
+                                            </a>
+                                        <?php else: ?>
+                                            <?= htmlspecialchars($row1['isi_respon']); ?>
+                                        <?php endif; ?>
                                     </p>
                                 </div>
                             <?php endif; ?>
                         <?php endforeach; ?>
-                    <?php endif; ?>
+                    
                 </td>
                 <td><?php echo htmlspecialchars($row['nama_topik']); ?></td>
                 <td><?php echo htmlspecialchars($row['nama']); ?></td>
@@ -74,7 +80,6 @@ $semua_respon = selectAllrespon();
                 <td>
                     <a href="tambah_respon.php?id_diskusi=<?= $row['id_diskusi'] ?>">Berikan Tanggapan</a>
                     <br/><br/>
-                    <a href="edit_respon.php?id_diskusi=<?= $row['id_diskusi'] ?>">Edit Tanggapan</a>
                 </td>
             </tr>
             <?php 
