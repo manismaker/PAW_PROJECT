@@ -25,8 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan'])) {
         }
     }
 }
-
-$daftar_topik = getTopik();
 ?>
 
 <!DOCTYPE html>

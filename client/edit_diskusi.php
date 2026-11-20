@@ -1,5 +1,60 @@
 <?php
 include "../validasi/permission.php";
+include "../config/koneksi.php";
+include "../validasi/validasi_inputan.php";
+
+$id_diskusi = $_GET['id_diskusi'] ?? $_POST['id_diskusi'] ?? null;
+var_dump($id_diskusi);
+
+
+$error1 = "";
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $judul = $_POST['judul'];
+    $kategori = $_POST['kategori'];
+    $isi_aspirasi = $_POST['isi_diskusi'];
+
+    try{
+        $statement = $dbc->prepare("UPDATE diskusi 
+                                    SET judul = :judul, 
+                                        id_topik = :id_topik, 
+                                        isi_aspirasi = :isi_aspirasi,
+                                        tanggal = NOW()
+                                    WHERE id_diskusi = :id_diskusi
+                                        ");
+        $statement->bindValue('id_diskusi', $id_diskusi);
+        $statement->bindValue('judul', $judul);
+        $statement->bindValue('id_topik', $kategori);
+        $statement->bindValue('isi_aspirasi', $isi_aspirasi);
+        $statement->execute();
+        
+        // echo "ID Diskusi yang dikirim: "; var_dump($id_diskusi); echo "<br>";
+        // echo "Jumlah baris di database yang berubah: " . $statement->rowCount() . "<br>";
+        // print_r($statement->errorInfo());
+        // exit();
+
+        header("location: diskusi.php?id_diskusi=$id_diskusi&status=sukses");
+        exit();
+        
+    }catch(PDOException $ex){
+        $error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
+        error_log("Error Update Profil: " . $ex->getMessage());
+    }
+}
+
+try{
+    $statement = $dbc->prepare("SELECT * FROM diskusi JOIN topik ON diskusi.id_topik = topik.id_topik WHERE id_diskusi = :id_diskusi");
+    $statement->bindValue('id_diskusi', $id_diskusi);
+    $statement->execute();
+    $data_diskusi = $statement->fetch(PDO::FETCH_ASSOC);
+
+    if(!$data_diskusi){
+        header('location: diskusi.php');
+        exit();
+    }
+}catch(PDOException $er){
+    echo "terjadi kesalah di sistem silahkan coba lagi";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -29,11 +84,12 @@ include "../validasi/permission.php";
 
     <div class="form-tambah-diskusi">
         <form method="POST" action="edit_diskusi.php">
+            <input type="hidden" name="id_diskusi" value="<?= $data_diskusi['id_diskusi'] ?>">
             <table>
                 <tr>
                     <td>Judul Diskusi</td>
                     <td>
-                        <input type="text" name="judul" value="Perbaikan Jalan di Wilayah Desa">
+                        <input type="text" name="judul" value="<?= $data_diskusi['judul']?>">
                     </td>
                 </tr>
 
@@ -41,14 +97,21 @@ include "../validasi/permission.php";
                     <td>Kategori</td>
                     <td>
                         <select name="kategori">
-                            <option value="Pendidikan">Pendidikan</option>
-                            <option value="Kesehatan">Kesehatan</option>
-                            <option value="Infrastruktur" selected>Infrastruktur</option>
-                            <option value="Ekonomi">Ekonomi</option>
-                            <option value="Lingkungan">Lingkungan</option>
-                            <option value="Pelayanan Publik">Pelayanan Publik</option>
-                            <option value="Sosial dan Budaya">Sosial dan Budaya</option>
-                            <option value="Keamanan dan Ketertiban">Keamanan dan Ketertiban</option>
+                            <option value="" selected><?= $data_diskusi['nama_topik']?></option>
+                            <?php 
+                            // Mengambil data topik dari database secara dinamis
+                            $daftar_topik = getTopik();
+                            if (!empty($daftar_topik)) :
+                                foreach ($daftar_topik as $topik) : 
+                            ?>
+                                <!-- Value diisi id_topik agar sesuai dengan relasi database -->
+                                <option value="<?php echo $topik['id_topik']; ?>">
+                                    <?php echo htmlspecialchars($topik['nama_topik']); ?>
+                                </option>
+                            <?php 
+                                endforeach; 
+                            endif; 
+                            ?>
                         </select>
                     </td>
                 </tr>
@@ -56,7 +119,7 @@ include "../validasi/permission.php";
                 <tr>
                     <td>Isi Diskusi</td>
                     <td>
-                        <textarea name="isi_diskusi">Saya ingin menyampaikan aspirasi mengenai kondisi jalan di wilayah desa yang masih rusak dan membutuhkan perbaikan.</textarea>
+                        <textarea name="isi_diskusi"><?= $data_diskusi['isi_aspirasi']?>.</textarea>
                     </td>
                 </tr>
 

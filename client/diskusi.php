@@ -91,7 +91,7 @@ $diskusi_saya = getDiskusiByUser($id_user_login);
     <p>Daftar topik diskusi yang telah Anda buat.</p>
 
     <div class="tambah-diskusi">
-        <a href="tambah_diskusi.php">+ Buat Diskusi Baru</a>
+        <a href="tambah_diskusi.php?">+ Buat Diskusi Baru</a>
     </div>
 
     <div class="tabel-diskusi">
@@ -114,7 +114,7 @@ $diskusi_saya = getDiskusiByUser($id_user_login);
                 <td><?php echo htmlspecialchars($row['nama_topik']); ?></td>
                 <td><?php echo htmlspecialchars($row['tanggal']); ?></td>
                 <td>
-                    <a href="edit_diskusi.php?id=<?php echo $row['id_diskusi']; ?>">Edit</a>
+                    <a href="edit_diskusi.php?id_diskusi=<?php echo $row['id_diskusi']; ?>">Edit</a>
                 </td>
             </tr>
             <?php 
