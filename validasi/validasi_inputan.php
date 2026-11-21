@@ -149,10 +149,10 @@ function tambah_diskusi($judul, $isi_aspirasi, $id_topik,$id_user){
     global $dbc;
     $statement = $dbc->prepare("INSERT INTO diskusi (judul, isi_aspirasi, id_topik, id_user, tanggal) 
                             VALUES (:judul, :isi_aspirasi, :id_topik, :id_user, NOW())");
-    $satement->bindValue(':judul', $judul);
-    $satement->bindValue(':isi_aspirasi', $isi_aspirasi);
-    $satement->bindValue(':id_topik', $id_topik);
-    $satement->bindValue(':id_user', $id_user);
+    $statement->bindValue(':judul', $judul);
+    $statement->bindValue(':isi_aspirasi', $isi_aspirasi);
+    $statement->bindValue(':id_topik', $id_topik);
+    $statement->bindValue(':id_user', $id_user);
 
     return $statement->execute();
 }
@@ -206,6 +206,15 @@ function getDiskusiByUser($id_user) {
                                 FROM diskusi 
                                 JOIN topik ON diskusi.id_topik = topik.id_topik 
                                 WHERE diskusi.id_user = :id_user");
+    $statement->execute(['id_user' => $id_user]);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+function getResponByUser($id_user) {
+    global $dbc;
+    $statement = $dbc->prepare("SELECT respon.*, diskusi.judul
+                                FROM respon
+                                JOIN diskusi ON respon.id_diskusi = diskusi.id_diskusi 
+                                WHERE respon.id_user = :id_user");
     $statement->execute(['id_user' => $id_user]);
     return $statement->fetchAll(PDO::FETCH_ASSOC);
 }

@@ -8,7 +8,7 @@ $error1 = "";
 $id_diskusi = $_GET['id_diskusi'] ?? $_POST['id_diskusi'] ?? null;
 $id_user = $_SESSION['id'] ?? null;
 $id_respon = $_GET['id_respon'] ?? $_POST['id_respon'] ?? null;
-var_dump($id_respon);
+
 
 $error = [];
 

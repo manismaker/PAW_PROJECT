@@ -5,7 +5,9 @@ include "../validasi/validasi_inputan.php";
 
 $semua_diskusi = selectAlldiskusi();
 $semua_respon = selectAllrespon();
-
+$id_user_login = $_SESSION['id'] ?? ($_SESSION['user_id'] ?? ($_SESSION['id_user'] ?? 0));
+// Ambil khusus diskusi milik user yang sedang login untuk tabel bawah
+$respon_saya = getResponByUser($id_user_login);
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -32,7 +34,7 @@ $semua_respon = selectAllrespon();
     <p>Lihat berbagai topik aspirasi masyarakat dan berikan tanggapan yang bermanfaat.</p>
 
     <div class="tabel-diskusi">
-                <table>
+            <table>
             <tr>
                 <th>No</th>
                 <th>Judul Diskusi & Isi Diskusi</th>
@@ -60,14 +62,8 @@ $semua_respon = selectAllrespon();
                                 <div>
                                     <strong>Tanggapan (<?php echo htmlspecialchars($row1['nama']); ?>):</strong>
                                     <!-- expert yang login doang yang bisa edit responnya sendiri -->
-                                    <p>
-                                        <?php if ($row1['id_user'] == $_SESSION['id']): ?>
-                                            <a href="edit_respon.php?id_respon=<?= $row1['id_respon'] ?>">
-                                                <?= htmlspecialchars($row1['isi_respon']); ?> (Edit)
-                                            </a>
-                                        <?php else: ?>
-                                            <?= htmlspecialchars($row1['isi_respon']); ?>
-                                        <?php endif; ?>
+                                    <p>      
+                                        <?= htmlspecialchars($row1['isi_respon']); ?>
                                     </p>
                                 </div>
                             <?php endif; ?>
@@ -79,7 +75,6 @@ $semua_respon = selectAllrespon();
                 <td><?php echo htmlspecialchars($row['tanggal']); ?></td>
                 <td>
                     <a href="tambah_respon.php?id_diskusi=<?= $row['id_diskusi'] ?>">Berikan Tanggapan</a>
-                    <br/><br/>
                 </td>
             </tr>
             <?php 
@@ -91,9 +86,47 @@ $semua_respon = selectAllrespon();
             </tr>
             <?php endif; ?>
         </table>
-
     </div>
 
+    <hr style="margin: 40px 0; border: 0; border-top: 1px solid #ddd;">
+
+    <h2>Respon Saya</h2>
+    <p>Daftar respon diskusi yang telah Anda buat.</p>
+
+    <div class="tabel-diskusi">
+        <table>
+            <tr>
+                <th>No</th>
+                <th>Tentang</th>
+                <th>Isi Respon</th>
+                <th>Tanggal</th>
+                <th>Aksi</th>
+            </tr>
+            <?php 
+            $no = 1;
+            if (!empty($respon_saya)) :
+                foreach ($respon_saya as $row) : 
+            ?>
+            <tr>
+                <td><?php echo $no++; ?></td>
+                <td><?php echo htmlspecialchars($row['judul']); ?></td>
+                <td><?php echo htmlspecialchars($row['isi_respon']); ?></td>
+                <td><?php echo htmlspecialchars($row['tgl_respon']); ?></td>
+                <td>
+                    <a href="edit_respon.php?id_respon=<?php echo $row['id_respon'] ?>">Edit</a>
+                </td>
+            </tr>
+            <?php 
+                endforeach; 
+            else : 
+            ?>
+            <tr>
+                <td colspan="5" style="text-align: center;">Belum ada respon.</td>
+            </tr>
+            <?php endif; ?>
+
+        </table>
+    </div>
 </div>
 
 <?php include '../includes/footer.php'; ?>
