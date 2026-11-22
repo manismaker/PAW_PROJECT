@@ -56,7 +56,7 @@ $respon_saya = getResponByUser($id_user_login);
                     <p style="margin: 4px 0 8px 0; font-size: 13px; color: #444;">
                         <?php echo htmlspecialchars($row['isi_aspirasi']); ?>
                     </p>
-                    <hr/>
+                    <hr>
                         <?php foreach ($semua_respon as $row1): ?>
                             <?php if ($row1['id_diskusi'] == $row['id_diskusi']): ?>
                                 <div>

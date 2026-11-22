@@ -4,7 +4,7 @@ include "../config/koneksi.php";
 include "../validasi/validasi_inputan.php";
 
 $id_diskusi = $_GET['id_diskusi'] ?? $_POST['id_diskusi'] ?? null;
-var_dump($id_diskusi);
+
 
 
 $error1 = "";

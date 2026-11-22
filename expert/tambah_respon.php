@@ -122,7 +122,7 @@ try {
     <div class="form-respon">
         <h3>Tambah Tanggapan</h3>
 
-        <form method="POST" action="">
+        <form method="POST" action="tambah_respon.php">
             <table>
                 <tr>
                     <td>Tanggapan</td>

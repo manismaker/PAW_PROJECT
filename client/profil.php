@@ -123,7 +123,6 @@ $alamat  = $Data_user['alamat'] ?? '';
                     <td>Nomor Telepon</td>
                     <td>:</td>
                     <td><?= htmlspecialchars($nomor) ?></td>
-                    <br/>
                 </tr>
                 <tr>
                     <td>Alamat</td>
@@ -140,35 +139,35 @@ $alamat  = $Data_user['alamat'] ?? '';
                     <tr>
                         <td>Nama Lengkap</td>
                         <td><input type="text" name="nama" value="<?= htmlspecialchars($lengkap) ?>" placeholder="Masukkan nama lengkap">
-                        <br/>
+                        <br>
                         <span><?= $error['nama'] ?? '' ?></span>
                         </td>
                     </tr>
                     <tr>
                         <td>Username</td>
                         <td><input type="text" name="username" value="<?= htmlspecialchars($user) ?>" placeholder="Masukkan username">
-                        <br/>
+                        <br>
                         <span><?= $error['username'] ?? '' ?></span>
                         </td>
                     </tr>
                     <tr>
                         <td>Email</td>
                         <td><input type="text" name="email" value="<?= htmlspecialchars($mail) ?>" placeholder="Masukkan email">
-                        <br/>
+                        <br>
                         <span><?= $error['email'] ?? '' ?></span>
                         </td>
                     </tr>
                     <tr>
                         <td>Nomor Telepon</td>
                         <td><input type="text" name="no_telepon" value="<?= htmlspecialchars($nomor) ?>" placeholder="Masukkan nomor telepon">
-                        <br/>
+                        <br>
                         <span><?= $error['no_telepon'] ?? '' ?></span>
                         </td>
                     </tr>
                     <tr>
                         <td>Alamat</td>
                         <td><textarea name="alamat" placeholder="Masukkan alamat"><?= htmlspecialchars($alamat) ?></textarea>
-                        <br/>
+                        <br>
                         <span><?= $error['alamat'] ?? '' ?></span>
                     </td>
                     </tr>
