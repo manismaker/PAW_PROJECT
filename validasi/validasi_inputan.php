@@ -219,7 +219,8 @@ function getResponByUser($id_user) {
     return $statement->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function validateTanggapan($error, $tanggapan){
+function validateTanggapan(&$error, $tanggapan){
+    global $dbc;
     if(!isset($tanggapan) || empty(trim($tanggapan))){
         $error['isi_respon'] = "Tanggapan harus diisi";
 }

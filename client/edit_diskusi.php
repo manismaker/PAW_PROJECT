@@ -8,36 +8,32 @@ $id_diskusi = $_GET['id_diskusi'] ?? $_POST['id_diskusi'] ?? null;
 
 
 $error1 = "";
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $judul = $_POST['judul'];
-    $kategori = $_POST['kategori'];
-    $isi_aspirasi = $_POST['isi_diskusi'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $judul = $_POST['judul'] ?? '';
+    $kategori = $_POST['kategori'] ?? '';
+    $isi_aspirasi = $_POST['isi_diskusi'] ?? '';
 
-    try{
+    try {
         $statement = $dbc->prepare("UPDATE diskusi 
                                     SET judul = :judul, 
                                         id_topik = :id_topik, 
                                         isi_aspirasi = :isi_aspirasi,
                                         tanggal = NOW()
-                                    WHERE id_diskusi = :id_diskusi
-                                        ");
-        $statement->bindValue('id_diskusi', $id_diskusi);
-        $statement->bindValue('judul', $judul);
-        $statement->bindValue('id_topik', $kategori);
-        $statement->bindValue('isi_aspirasi', $isi_aspirasi);
-        $statement->execute();
-        
-        // echo "ID Diskusi yang dikirim: "; var_dump($id_diskusi); echo "<br>";
-        // echo "Jumlah baris di database yang berubah: " . $statement->rowCount() . "<br>";
-        // print_r($statement->errorInfo());
-        // exit();
+                                    WHERE id_diskusi = :id_diskusi");
 
-        header("location: diskusi.php?id_diskusi=$id_diskusi&status=sukses");
+        $statement->bindValue(':id_diskusi', $id_diskusi);
+        $statement->bindValue(':judul', $judul);
+        $statement->bindValue(':id_topik', $kategori);
+        $statement->bindValue(':isi_aspirasi', $isi_aspirasi);
+
+        $statement->execute();
+
+        header("Location: diskusi.php?id_diskusi=" . urlencode($id_diskusi) . "&status=sukses");
         exit();
-        
-    }catch(PDOException $ex){
+
+    } catch (PDOException $ex) {
         $error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
-        error_log("Error Update Profil: " . $ex->getMessage());
+        error_log("Error Update Diskusi: " . $ex->getMessage());
     }
 }
 
@@ -97,20 +93,21 @@ try{
                     <td>Kategori</td>
                     <td>
                         <select name="kategori">
-                            <option value="" selected><?= $data_diskusi['nama_topik']?></option>
-                            <?php 
-                            // Mengambil data topik dari database secara dinamis
+                            <option value="<?= $data_diskusi['id_topik'] ?>" selected>
+                                <?= htmlspecialchars($data_diskusi['nama_topik']) ?>
+                            </option>
+
+                            <?php
                             $daftar_topik = getTopik();
-                            if (!empty($daftar_topik)) :
-                                foreach ($daftar_topik as $topik) : 
+                                foreach ($daftar_topik as $topik) :
+                                    if ($topik['id_topik'] != $data_diskusi['id_topik']) :
                             ?>
-                                <!-- Value diisi id_topik agar sesuai dengan relasi database -->
-                                <option value="<?php echo $topik['id_topik']; ?>">
-                                    <?php echo htmlspecialchars($topik['nama_topik']); ?>
-                                </option>
-                            <?php 
-                                endforeach; 
-                            endif; 
+                                        <option value="<?= $topik['id_topik'] ?>">
+                                            <?= htmlspecialchars($topik['nama_topik']) ?>
+                                        </option>
+                            <?php
+                                    endif;
+                                endforeach;
                             ?>
                         </select>
                     </td>
@@ -119,7 +116,7 @@ try{
                 <tr>
                     <td>Isi Diskusi</td>
                     <td>
-                        <textarea name="isi_diskusi"><?= $data_diskusi['isi_aspirasi']?>.</textarea>
+                        <textarea name="isi_diskusi"><?= $data_diskusi['isi_aspirasi']?></textarea>
                     </td>
                 </tr>
 

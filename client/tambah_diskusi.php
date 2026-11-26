@@ -53,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan'])) {
     <p>Sampaikan aspirasi dan permasalahan yang ingin Anda diskusikan.</p>
 
     <div class="form-tambah-diskusi">
+        <span><?php echo $pesan_error ?></span>
         <form method="POST" action="tambah_diskusi.php">
             <table>
                 <tr>
@@ -65,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan'])) {
                 <tr>
                     <td>Kategori</td>
                     <td>
-                        <select name="kategori" required>
+                        <select name="kategori">
                             <option value="">Pilih Kategori</option>
                             <?php 
                             // Mengambil data topik dari database secara dinamis

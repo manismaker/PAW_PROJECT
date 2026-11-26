@@ -82,15 +82,9 @@ try {
 <div class="content">
 
     <h2>Tambah Tanggapan</h2>
-    <p>Perbarui tanggapan yang telah Anda berikan pada topik diskusi.</p>
+    <p>Berikan tanggapan Anda terhadap diskusi berikut.</p>
 
-    <?php if (isset($_GET['status']) && $_GET['status'] === 'sukses'): ?>
-        <p style="color: green;">Tanggapan berhasil diperbarui!</p>
-    <?php endif; ?>
-
-    <?php if (!empty($error1)): ?>
-        <p style="color: red;"><?= htmlspecialchars($error1) ?></p>
-    <?php endif; ?>
+    <span><?= $error1 ?></span>
 
     <div class="informasi-diskusi">
         <h3>Informasi Diskusi</h3>
@@ -122,7 +116,7 @@ try {
     <div class="form-respon">
         <h3>Tambah Tanggapan</h3>
 
-        <form method="POST" action="tambah_respon.php">
+        <form method="POST" action="tambah_respon.php?id_diskusi=<?= urlencode($id_diskusi) ?>">
             <table>
                 <tr>
                     <td>Tanggapan</td>
