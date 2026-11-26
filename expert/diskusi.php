@@ -53,7 +53,7 @@ $respon_saya = getResponByUser($id_user_login);
                 <td>
                     <!-- Aspirasi Client -->
                     <strong><?php echo htmlspecialchars($row['judul']); ?></strong>
-                    <p style="margin: 4px 0 8px 0; font-size: 13px; color: #444;">
+                    <p>
                         <?php echo htmlspecialchars($row['isi_aspirasi']); ?>
                     </p>
                     <hr>
@@ -88,7 +88,7 @@ $respon_saya = getResponByUser($id_user_login);
         </table>
     </div>
 
-    <hr style="margin: 40px 0; border: 0; border-top: 1px solid #ddd;">
+    <hr style="margin: 40px ">
 
     <h2>Respon Saya</h2>
     <p>Daftar respon diskusi yang telah Anda buat.</p>

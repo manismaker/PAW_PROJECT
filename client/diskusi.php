@@ -52,7 +52,7 @@ $diskusi_saya = getDiskusiByUser($id_user_login);
                 <td><?php echo $no++; ?></td>
                 <td>
                     <strong><?php echo htmlspecialchars($row['judul']); ?></strong>
-                    <p style="margin: 4px 0 0 0; font-size: 13px; color: #444;">
+                    <p>
                         <?php echo htmlspecialchars($row['isi_aspirasi']); ?>
                     </p>
                     <hr>
@@ -84,7 +84,7 @@ $diskusi_saya = getDiskusiByUser($id_user_login);
         </table>
     </div>
 
-    <hr style="margin: 40px 0; border: 0; border-top: 1px solid #ddd;">
+    <hr style="margin: 40px">
 
 
     <h2>Diskusi Saya</h2>

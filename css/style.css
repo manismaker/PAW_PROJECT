@@ -458,6 +458,15 @@ body {
 .form-profil button:hover {
   background-color: #415e7b;
 }
+.profil-berhasil{
+  color: green;
+  font-size: 15px;
+}
+.profil-error{
+  color: red;
+  font-size: 15px;
+}
+
 
 /* Halaman Diskusi Client */
 .tambah-diskusi {

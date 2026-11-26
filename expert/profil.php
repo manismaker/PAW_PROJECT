@@ -86,11 +86,11 @@ $alamat  = $Data_user['alamat'] ?? '';
 
         <!-- Menampilkan pesan error atau sukses -->
         <?php if (!empty($error1)): ?>
-            <p style="color: red;"><?= htmlspecialchars($error1) ?></p>
+            <p class="profil-error"><?= htmlspecialchars($error1) ?></p>
         <?php endif; ?>
         
         <?php if (isset($_GET['status']) && $_GET['status'] === 'sukses'): ?>
-            <p style="color: green;">Profil berhasil diperbarui!</p>
+            <p class="profil-berhasil">Profil berhasil diperbarui!</p>
         <?php endif; ?>
 
         <div class="informasi-profil">
@@ -133,35 +133,35 @@ $alamat  = $Data_user['alamat'] ?? '';
                         <td>Nama Lengkap</td>
                         <td><input type="text" name="nama" value="<?= htmlspecialchars($lengkap) ?>" placeholder="Masukkan nama lengkap">
                         <br>
-                        <span><?= $error['nama'] ?? '' ?></span>
+                        <span class="profil-error"><?= $error['nama'] ?? '' ?></span>
                         </td>
                     </tr>
                     <tr>
                         <td>Username</td>
                         <td><input type="text" name="username" value="<?= htmlspecialchars($user) ?>" placeholder="Masukkan username">
                         <br>
-                        <span><?= $error['username'] ?? '' ?></span>
+                        <span class="profil-error"><?= $error['username'] ?? '' ?></span>
                         </td>
                     </tr>
                     <tr>
                         <td>Email</td>
                         <td><input type="text" name="email" value="<?= htmlspecialchars($mail) ?>" placeholder="Masukkan email">
                         <br>
-                        <span><?= $error['email'] ?? '' ?></span>
+                        <span class="profil-error"><?= $error['email'] ?? '' ?></span>
                         </td>
                     </tr>
                     <tr>
                         <td>Nomor Telepon</td>
                         <td><input type="text" name="no_telepon" value="<?= htmlspecialchars($nomor) ?>" placeholder="Masukkan nomor telepon">
                         <br>
-                        <span><?= $error['no_telepon'] ?? '' ?></span>
+                        <span class="profil-error"><?= $error['no_telepon'] ?? '' ?></span>
                         </td>
                     </tr>
                     <tr>
                         <td>Alamat</td>
                         <td><textarea name="alamat" placeholder="Masukkan alamat"><?= htmlspecialchars($alamat) ?></textarea>
                         <br>
-                        <span><?= $error['alamat'] ?? '' ?></span>
+                        <span class="profil-error"><?= $error['alamat'] ?? '' ?></span>
                     </td>
                     </tr>
                     <tr>

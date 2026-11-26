@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan'])) {
     <p>Sampaikan aspirasi dan permasalahan yang ingin Anda diskusikan.</p>
 
     <div class="form-tambah-diskusi">
-        <span><?php echo $pesan_error ?></span>
+        <span class="profil-error"><?php echo $pesan_error ?></span>
         <form method="POST" action="tambah_diskusi.php">
             <table>
                 <tr>

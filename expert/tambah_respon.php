@@ -84,7 +84,7 @@ try {
     <h2>Tambah Tanggapan</h2>
     <p>Berikan tanggapan Anda terhadap diskusi berikut.</p>
 
-    <span><?= $error1 ?></span>
+    <span class="profil-error"><?= $error1 ?></span>
 
     <div class="informasi-diskusi">
         <h3>Informasi Diskusi</h3>
