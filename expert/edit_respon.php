@@ -11,18 +11,24 @@ $id_respon = $_GET['id_respon'] ?? $_POST['id_respon'] ?? null;
 
 
 $error = [];
+$error1 = "";
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $isi_respon = $_POST['isi_respon'];
-    validateTanggapan($error, $isi_respon);
-    try{
-    update_respon($isi_respon, $id_diskusi, $id_user, $id_respon);
 
-    header("Location: diskusi.php?id_diskusi=$id_diskusi&status=sukses");
-    exit();
+    if($isi_respon == ""){
+        $error1 = "Update tidak boleh kosong";
+    }else{
+        validateTanggapan($error, $isi_respon);
+        try{
+        update_respon($isi_respon, $id_diskusi, $id_user, $id_respon);
+
+        header("Location: diskusi.php?id_diskusi=$id_diskusi&status=sukses");
+        exit();
     }catch(PDOException $ex){
         $error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
         error_log($ex->getMessage());
+    }
     }
 }
 
@@ -93,6 +99,8 @@ try {
 
     <h2>Edit Tanggapan</h2>
     <p>Perbarui tanggapan yang telah Anda berikan pada topik diskusi.</p>
+
+    <span><?= $error1?></span>
 
     <div class="informasi-diskusi">
         <h3>Informasi Diskusi</h3>
