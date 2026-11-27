@@ -34,12 +34,12 @@
     }
 
     function username(&$errors, $field_list, $field_name){
-        $pola = "/^[a-zA-Z0-9_]+$/";
+        $pola = "/^[a-zA-Z0-9]+$/";
 
         if(!isset($field_list[$field_name]) || empty($field_list[$field_name])){
             $errors[$field_name] = "Username harus diisi";
         }else if(!preg_match($pola, $field_list[$field_name])){
-            $errors[$field_name] = "Username hanya boleh berisi huruf, angka, dan underscore";
+            $errors[$field_name] = "Username hanya boleh berisi huruf dan angka";
         }else if(strlen($field_list[$field_name]) < 5 || strlen($field_list[$field_name]) > 20){
             $errors[$field_name] = "Username harus terdiri dari 5-20 karakter";
         }
