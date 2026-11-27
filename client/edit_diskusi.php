@@ -81,7 +81,7 @@ try{
     <h2>Edit Diskusi</h2>
     <p>Perbarui informasi topik diskusi yang telah Anda buat.</p>
 
-    <span><?= $error1?></span>
+    <span class="profil-error"><?= $error1?></span>
 
     <div class="form-tambah-diskusi">
         <form method="POST" action="edit_diskusi.php">
