@@ -12,28 +12,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $judul = $_POST['judul'] ?? '';
     $kategori = $_POST['kategori'] ?? '';
     $isi_aspirasi = $_POST['isi_diskusi'] ?? '';
+    if($judul == "" || $kategori == "" || $isi_aspirasi == ""){
+        $error1 = "Diantara inputan tidak boleh ada yang kosong";
+    }else{
+        try {
+            $statement = $dbc->prepare("UPDATE diskusi 
+                                        SET judul = :judul, 
+                                            id_topik = :id_topik, 
+                                            isi_aspirasi = :isi_aspirasi,
+                                            tanggal = NOW()
+                                        WHERE id_diskusi = :id_diskusi");
 
-    try {
-        $statement = $dbc->prepare("UPDATE diskusi 
-                                    SET judul = :judul, 
-                                        id_topik = :id_topik, 
-                                        isi_aspirasi = :isi_aspirasi,
-                                        tanggal = NOW()
-                                    WHERE id_diskusi = :id_diskusi");
+            $statement->bindValue(':id_diskusi', $id_diskusi);
+            $statement->bindValue(':judul', $judul);
+            $statement->bindValue(':id_topik', $kategori);
+            $statement->bindValue(':isi_aspirasi', $isi_aspirasi);
 
-        $statement->bindValue(':id_diskusi', $id_diskusi);
-        $statement->bindValue(':judul', $judul);
-        $statement->bindValue(':id_topik', $kategori);
-        $statement->bindValue(':isi_aspirasi', $isi_aspirasi);
+            $statement->execute();
 
-        $statement->execute();
+            header("Location: diskusi.php?id_diskusi=" . urlencode($id_diskusi) . "&status=sukses");
+            exit();
 
-        header("Location: diskusi.php?id_diskusi=" . urlencode($id_diskusi) . "&status=sukses");
-        exit();
-
-    } catch (PDOException $ex) {
-        $error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
-        error_log("Error Update Diskusi: " . $ex->getMessage());
+        } catch (PDOException $ex) {
+            $error1 = "Terjadi kesalahan sistem. Silakan coba beberapa saat lagi.";
+            error_log("Error Update Diskusi: " . $ex->getMessage());
+        }
     }
 }
 
@@ -77,6 +80,8 @@ try{
 
     <h2>Edit Diskusi</h2>
     <p>Perbarui informasi topik diskusi yang telah Anda buat.</p>
+
+    <span><?= $error1?></span>
 
     <div class="form-tambah-diskusi">
         <form method="POST" action="edit_diskusi.php">
